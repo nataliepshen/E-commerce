@@ -1,0 +1,13 @@
+@import "./../../../styles/variables.scss";
+
+.navSections {
+    @include flex-between();
+    align-items: center;
+    width: 376px;
+    height: 120px;
+    padding-right: 47px;
+
+    & a {
+        text-decoration: none;
+    }
+}

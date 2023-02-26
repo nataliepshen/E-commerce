@@ -1,0 +1,26 @@
+@import "./../../../../../styles/variables.scss";
+
+.title_container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.titleCat {
+    @include font-700();
+    font-size: 44px;
+    color: $dark;
+    margin: 0 10px 0 0;
+}
+.quantity {
+    background: #f9f9f9;
+    border-radius: 20px;
+    padding: 4.5px 16px;
+    color: $mint;
+    @include font-700();
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

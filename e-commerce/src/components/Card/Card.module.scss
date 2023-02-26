@@ -1,0 +1,47 @@
+@import "./../../styles/variables.scss";
+
+.card {
+    max-width: 394px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+.imgContainer {
+    width: 394px;
+    height: 360px;
+    margin-bottom: 26px;
+}
+.cardImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.categoryHeader {
+    margin: 0 0 14px 0;
+    @include font-700();
+    font-size: 18px;
+    color: $grey;
+}
+.titleHeader {
+    margin: 0 0 6px 0;
+    @include font-700();
+    font-size: 26px;
+    letter-spacing: 0.01em;
+    color: $dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.subHeader, .subHeader a {
+    margin: 0;
+    @include font-500();
+    color: $grey;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.contentHeader {
+    margin: 18px 0 0 0;
+    @include font-700();
+    font-size: 24px;
+    color: $dark;
+}

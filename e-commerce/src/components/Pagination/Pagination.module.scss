@@ -1,0 +1,52 @@
+@import "./../../styles/variables.scss";
+
+.container {
+    display: flex;
+    margin-top: 50px;
+    margin-bottom: 48px;
+    margin-left: -40px;
+}
+.button {
+    width: 38px;
+    height: 42px;
+    border: none;
+    background: url(./../../assets/arrow-page.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.4;
+    }
+}
+
+.btn_prev {
+    transform: translateX(38px) matrix(-1, 0, 0, 1, 0, 0);
+}
+
+.page_list {
+    display: flex;
+    margin: 0 15px 0 15px;
+    list-style: none;
+}
+.page_item {
+    box-sizing: border-box;
+    width: 38px;
+    height: 42px;
+    border: 1.5px solid #f9f9f9;
+    @include font-500();
+    color: $dark;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &.selected {
+        background: $mint;
+        border: none;
+        color: #ffffff;
+    }
+    &.ellipsis {
+        border: none;
+    }
+}

@@ -1,0 +1,50 @@
+@import "./../../../../../styles/variables.scss";
+
+.input_field {
+  position: relative;
+  width: 1020px;
+  height: 84px;
+  box-shadow: $shadow;
+  &::before {
+    content: "";
+    position: absolute;
+    display: flex;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    top: 0;
+    bottom: 0;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .input {
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    padding: 25px 185px 25px 75px;
+    background: $white;
+    border: 1px solid $white;
+    @include font-500();
+    color: $dark;
+    &::placeholder {
+        color: $grey;
+    }
+    &:focus {
+        outline: none;
+        border-color: $mint;
+        color: $dark;
+    }
+  }
+  .find_button {
+    position: absolute;
+    top: 15px;
+    right: 28px;
+  }
+}
+.search_icon::before {
+    background: url(./../../../../../assets/search.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
