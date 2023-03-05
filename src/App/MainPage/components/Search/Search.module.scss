@@ -1,7 +1,7 @@
-@import "./../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .search_filter {
   width: 100%;
-  @include flex-between();
+  @include flex-between;
   margin-bottom: 51px;
 }

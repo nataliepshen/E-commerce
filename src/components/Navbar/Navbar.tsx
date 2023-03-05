@@ -1,3 +1,5 @@
+import React from "react";
+
 import Icons from "./Icons";
 import Logo from "./Logo";
 import styles from "./Navbar.module.scss";
@@ -13,4 +15,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

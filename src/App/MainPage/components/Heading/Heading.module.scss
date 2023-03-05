@@ -1,4 +1,4 @@
-@import "./../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .heading {
     width: 600px;
@@ -9,14 +9,14 @@
 }
 
 .mainHeading {
-    @include font-700();
+    @include font-700;
     font-size: 64px;
     color: $dark;
     margin: 0 0 20px 0;
 }
 
 .par {
-    @include font-500();
+    @include font-500;
     color: $grey;
     text-align: center;
     margin: 0;

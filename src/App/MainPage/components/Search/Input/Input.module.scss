@@ -1,4 +1,4 @@
-@import "./../../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .input_field {
   position: relative;
@@ -26,7 +26,7 @@
     padding: 25px 185px 25px 75px;
     background: $white;
     border: 1px solid $white;
-    @include font-500();
+    @include font-500;
     color: $dark;
     &::placeholder {
         color: $grey;
@@ -44,7 +44,7 @@
   }
 }
 .search_icon::before {
-    background: url(./../../../../../assets/search.svg);
+    background: url(~@assets/search.svg);
     background-repeat: no-repeat;
     background-position: center;
 }

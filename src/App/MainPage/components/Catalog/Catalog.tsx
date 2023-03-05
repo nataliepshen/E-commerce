@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
+import Card from "@components/Card";
 import Pagination from "@components/Pagination";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import ProductListStore from "@store/ProductListStore";
+import rootStore from "@store/RootStore/instance";
+import { useLocalStore } from "@utils/useLocalStore";
+import { observer } from "mobx-react-lite";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import styles from "./Catalog.module.scss";
 import TitleCatalog from "./TitleCatalog";
-import Card from "../../../../components/Card";
 
 export type Category = {
   id: string;
@@ -22,36 +25,38 @@ export type Product = {
 };
 
 const Catalog: React.FC = () => {
+  const productListStore = useLocalStore(() => new ProductListStore());
   const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(0);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams({ page: "1" });
+  rootStore.query.setSearch(searchParams.toString());
+  const setCurrentPage = useCallback(
+    (page: number) => {
+      setSearchParams({
+        ...rootStore.query.getAllParams(),
+        page: String(page),
+      });
+    },
+    [setSearchParams]
+  );
   const limit = 9;
-  const offset = (currentPage - 1) * limit;
+  const page = rootStore.query.getParam("page");
+  const offset = (Number(page) - 1) * limit;
   useEffect(() => {
-    const fetchQuantity = async () => {
-      const result = await axios.get(
-        "https://api.escuelajs.co/api/v1/products"
-      );
-      setQuantity(result.data.length);
-    };
-    fetchQuantity();
-  }, []);
+    productListStore.getQuantity();
+  }, [productListStore]);
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get<Product[]>(
-        `https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`
-      );
-      setProducts(data);
-    };
-    fetchProducts();
-  }, [offset]);
+    productListStore.getProductList({
+      limit: limit,
+      offset: offset,
+    });
+  }, [offset, productListStore]);
   return (
     <>
       <div className={styles.catalog_container}>
-        <TitleCatalog quantity={quantity} />
+        <TitleCatalog quantity={productListStore.quantity} />
         <div className={styles.catalog}>
-          {products.map((product: Product) => (
+          {productListStore.productList.map((product: Product) => (
             <Card
               key={product.id}
               image={product.images[0]}
@@ -65,13 +70,13 @@ const Catalog: React.FC = () => {
         </div>
       </div>
       <Pagination
-        totalProducts={quantity}
-        currentPage={currentPage}
+        totalProducts={productListStore.quantity}
+        currentPage={productListStore.currentPage}
         productsPerPage={limit}
-        onPageChange={(page) => setCurrentPage(page)}
+        onPageChange={setCurrentPage}
       />
     </>
   );
 };
 
-export default Catalog;
+export default observer(Catalog);

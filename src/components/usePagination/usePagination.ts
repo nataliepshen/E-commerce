@@ -8,7 +8,7 @@ export type usePaginationProps = {
   currentPage: number;
 };
 
-const usePagination = ({
+export const usePagination = ({
   totalProducts,
   productsPerPage,
   currentPage,
@@ -40,5 +40,3 @@ const usePagination = ({
   }, [totalProducts, productsPerPage, currentPage]);
   return pageArray;
 };
-
-export default usePagination;

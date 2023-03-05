@@ -1,10 +1,10 @@
-@import "./../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .catalog_container {
     width: 100%;
 }
 
 .catalog {
-    @include flex-between();
+    @include flex-between;
     flex-wrap: wrap;
 }

@@ -1,11 +1,11 @@
-@import "./../../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .filter {
     position: relative;
     padding: 26px 52px;
     background: $white;
     box-shadow: $shadow;
-    @include font-500();
+    @include font-500;
     color: $dark;
     display: flex;
     border: none;
@@ -14,7 +14,7 @@
 .filter_icon {
     width: 30px;
     height: 30px;
-    background: url(./../../../../../assets/filter.svg);
+    background: url(~@assets/filter.svg);
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 12px;
@@ -36,6 +36,6 @@
     line-height: 18px;
     color: $dark;
     padding: 16px;
-    background: #ffffff;
+    background: $white;
     cursor: pointer;
 }

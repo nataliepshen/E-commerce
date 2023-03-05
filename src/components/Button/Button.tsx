@@ -8,9 +8,9 @@ export type ButtonProps = React.PropsWithChildren<{
   React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FC<ButtonProps> = ({ children, className }) => {
-  let buttonClass = classNames(`${styles.button}`, className);
-
-  return <button className={buttonClass}>{children}</button>;
+  return (
+    <button className={classNames(styles.button, className)}>{children}</button>
+  );
 };
 
 export default Button;

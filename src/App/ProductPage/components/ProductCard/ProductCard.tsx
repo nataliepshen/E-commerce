@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import axios from "axios";
-import { Product } from "src/App/MainPage/components/Catalog";
+import OneProductStore from "@store/OneProductStore";
+import { useLocalStore } from "@utils/useLocalStore";
+import { observer } from "mobx-react-lite";
 
 import styles from "./ProductCard.module.scss";
 import ProductImage from "./ProductImage";
@@ -13,36 +14,40 @@ export type ProductCardProps = {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ id }) => {
-  const [product, setProduct] = useState<Product>();
+  const oneProductStore = useLocalStore(() => new OneProductStore());
+
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await axios.get<Product>(
-        `https://api.escuelajs.co/api/v1/products/${id}`
-      );
-      setProduct(data);
-    };
-    fetch();
-  }, [id]);
+    oneProductStore.getOneProduct({
+      id: id,
+    });
+  }, [id, oneProductStore]);
   useEffect(() => {
     window.scrollTo({ behavior: "smooth", top: 200 });
   }, [id]);
   return (
     <div>
-      {product && (
+      {oneProductStore.product && (
         <div>
           <div className={styles.card}>
-            <ProductImage images={product.images} />
+            <ProductImage
+              images={oneProductStore.product.images}
+              index={oneProductStore.imageIndex}
+              prevDisabled={oneProductStore.prevDisabled}
+              nextDisabled={oneProductStore.nextDisabled}
+              prev={oneProductStore.prev}
+              next={oneProductStore.next}
+            />
             <ProductInfo
-              name={product.title}
-              description={product.description}
-              price={product.price}
+              name={oneProductStore.product.title}
+              description={oneProductStore.product.description}
+              price={oneProductStore.product.price}
             />
           </div>
-          <RelatedItems id={product.category.id} item_id={product.id} />
+          <RelatedItems items={oneProductStore.relatedItems} />
         </div>
       )}
     </div>
   );
 };
 
-export default ProductCard;
+export default observer(ProductCard);

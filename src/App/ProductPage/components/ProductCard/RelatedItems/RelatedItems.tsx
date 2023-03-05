@@ -1,36 +1,16 @@
-import { useEffect, useState } from "react";
-
-import Card from "@components/Card/Card";
-import axios from "axios";
+import Card from "@components/Card";
 import { useNavigate } from "react-router-dom";
-import { Product } from "src/App/MainPage/components/Catalog/Catalog";
+import { Product } from "src/App/MainPage/components/Catalog";
 
 import styles from "./RelatedItems.module.scss";
 
 export type RelatedItemsProps = {
-  id: string | undefined;
-  item_id: number;
+  items: Product[];
 };
 
-const RelatedItems = ({ id, item_id }: RelatedItemsProps) => {
+const RelatedItems = ({ items }: RelatedItemsProps) => {
   const navigate = useNavigate();
-  const [items, setItems] = useState<Product[]>([]);
-  useEffect(() => {
-    const fetch = async () => {
-      const { data } = await axios.get<Product[]>(
-        `https://api.escuelajs.co/api/v1/categories/${id}/products`
-      );
-      let itemsList: Product[] = [];
-      while (itemsList.length < 3) {
-        let item = Math.floor(Math.random() * data.length);
-        if (!itemsList.includes(data[item])) {
-          itemsList.push(data[item]);
-        }
-      }
-      setItems(itemsList);
-    };
-    fetch();
-  }, [id, item_id]);
+
   return (
     <div className={styles.items_container}>
       <h4 className={styles.items_title}>Related Items</h4>
