@@ -1,0 +1,41 @@
+@import "./../../../../../styles/variables.scss";
+
+.filter {
+    position: relative;
+    padding: 26px 52px;
+    background: $white;
+    box-shadow: $shadow;
+    @include font-500();
+    color: $dark;
+    display: flex;
+    border: none;
+    cursor: pointer;
+}
+.filter_icon {
+    width: 30px;
+    height: 30px;
+    background: url(./../../../../../assets/filter.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 12px;
+}
+.filter_list {
+    width: 189.25px;
+    position: absolute;
+    list-style: none;
+    box-shadow: $shadow;
+    padding: 0;
+    z-index: 1;
+}
+.filter_item {
+    box-sizing: border-box;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 18px;
+    color: $dark;
+    padding: 16px;
+    background: #ffffff;
+    cursor: pointer;
+}

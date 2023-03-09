@@ -1,0 +1,29 @@
+@mixin font-500() {
+  font-family: "Eudoxus Sans", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 180%;
+}
+
+@mixin font-700() {
+  font-family: "Eudoxus Sans", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+}
+
+@mixin flex-between() {
+  display: flex;
+  justify-content: space-between;
+}
+
+$dark: #151411;
+
+$grey: #afadb5;
+
+$mint: #518581;
+
+$white: #ffffff;
+
+$shadow: 0px 4px 20px rgba(175, 173, 181, 0.2);
