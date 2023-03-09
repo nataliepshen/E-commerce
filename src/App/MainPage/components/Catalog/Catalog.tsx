@@ -10,17 +10,16 @@ import TitleCatalog from "./TitleCatalog";
 export type CatalogProps = {
   quantity: number;
   list: ProductModel[];
-  currentPage: number;
-  setPage: (page: number) => void;
+  categoryName?: string;
 };
 
-const Catalog: React.FC<CatalogProps> = ({ quantity, list }) => {
+const Catalog: React.FC<CatalogProps> = ({ quantity, list, categoryName }) => {
   const navigate = useNavigate();
 
   return (
     <>
       <div className={styles.catalog_container}>
-        <TitleCatalog quantity={quantity} />
+        <TitleCatalog quantity={quantity} categoryName={categoryName} />
         <div className={styles.catalog}>
           {list.map((product: ProductModel) => (
             <Card

@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
-
-import { CategoryApi, CategoryModel } from "@store/models/products";
-import axios from "axios";
+import { CategoryModel } from "@store/models/products";
+import rootStore from "@store/RootStore/instance";
+import classnames from "classnames/bind";
 
 import styles from "./Filter.module.scss";
 
-const Filter: React.FC = () => {
-  const [showItems, setShowItems] = useState(false);
-  const [categories, setCategories] = useState<CategoryModel[]>([]);
-  const handleClickFilter = () => setShowItems(!showItems);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const { data } = await axios.get<CategoryApi[]>(
-        "https://api.escuelajs.co/api/v1/categories"
-      );
-      setCategories(data);
-    };
-    fetchCategories();
-  }, []);
+export type FilterProps = {
+  handleClickFilter: () => void;
+  showItems: boolean;
+  categoryList: CategoryModel[];
+  selected: boolean;
+  setCategory: (id: string) => void;
+};
+
+const Filter: React.FC<FilterProps> = ({
+  handleClickFilter,
+  showItems,
+  categoryList,
+  selected,
+  setCategory,
+}) => {
+  const cx = classnames.bind(styles);
   return (
     <div>
       <button className={styles.filter} onClick={handleClickFilter}>
@@ -26,9 +28,21 @@ const Filter: React.FC = () => {
       </button>
       {showItems && (
         <ul className={styles.filter_list}>
-          {categories.map((item: CategoryModel) => {
+          {categoryList.map((item: CategoryModel) => {
             return (
-              <li key={item.id} className={styles.filter_item}>
+              <li
+                key={item.id}
+                className={cx({
+                  filter_item: true,
+                  filter_item_selected:
+                    item.id === rootStore.query.getParam("categoryId"),
+                })}
+                onClick={
+                  rootStore.query.getParam("categoryId") === item.id
+                    ? () => setCategory("")
+                    : () => setCategory(item.id)
+                }
+              >
                 {item.name}
               </li>
             );

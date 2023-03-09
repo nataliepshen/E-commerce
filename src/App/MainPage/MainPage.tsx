@@ -19,6 +19,7 @@ const MainPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     query: "",
+    categoryId: "",
   });
 
   rootStore.query.setSearch(searchParams.toString());
@@ -54,6 +55,10 @@ const MainPage: React.FC = () => {
     });
   }, [currentPage, productListStore, value]);
 
+  useEffect(() => {
+    productListStore.getCategoryList();
+  }, [productListStore]);
+
   const onClick = useCallback(() => {
     productListStore.getProductList({
       page: currentPage,
@@ -61,18 +66,43 @@ const MainPage: React.FC = () => {
     });
   }, [currentPage, productListStore, value]);
 
+  const setCategoryId = useCallback(
+    (id: string) => {
+      setSearchParams({
+        ...rootStore.query.allParams,
+        categoryId: id,
+      });
+      productListStore.selectCategory();
+    },
+    [productListStore, setSearchParams]
+  );
+  const categoryId = String(rootStore.query.getParam("categoryId"));
+  const categoryName =
+    productListStore.categoryList[Number(categoryId) - 1]?.name;
+  useEffect(() => {
+    productListStore.getProductList({
+      page: currentPage,
+      categoryId: Number(categoryId),
+    });
+  }, [categoryId, currentPage, productListStore]);
+
   return (
     <Container>
       <Heading />
       <div className={styles.search_filter}>
         <Input value={value} handleChange={handleChange} onClick={onClick} />
-        <Filter />
+        <Filter
+          handleClickFilter={productListStore.toggleFilter}
+          showItems={productListStore.showFilter}
+          categoryList={productListStore.categoryList}
+          selected={productListStore.categoryIsSelected}
+          setCategory={setCategoryId}
+        />
       </div>
       <Catalog
         quantity={productListStore.quantity}
         list={productListStore.productList}
-        currentPage={currentPage}
-        setPage={setCurrentPage}
+        categoryName={categoryName}
       />
       <Pagination
         totalProducts={productListStore.quantity}

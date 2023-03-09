@@ -7,11 +7,11 @@ export type CategoryApi = {
 };
 
 export type CategoryModel = {
-  id: number;
+  id: string;
   name: string;
 };
 
 export const normalizeCategory = (from: CategoryApi): CategoryModel => ({
-  id: from.id,
+  id: String(from.id),
   name: from.name,
 });

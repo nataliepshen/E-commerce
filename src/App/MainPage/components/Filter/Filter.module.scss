@@ -38,4 +38,8 @@
     padding: 16px;
     background: $white;
     cursor: pointer;
+
+    &_selected {
+        color: $mint;
+    }
 }

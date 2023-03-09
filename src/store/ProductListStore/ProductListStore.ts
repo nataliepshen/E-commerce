@@ -1,4 +1,9 @@
-import { normalizeProduct, ProductModel } from "@store/models/products";
+import {
+  CategoryModel,
+  normalizeCategory,
+  normalizeProduct,
+  ProductModel,
+} from "@store/models/products";
 import rootStore from "@store/RootStore/instance";
 import { HttpMethod } from "@utils/httpMethod";
 import { ILocalStore } from "@utils/useLocalStore";
@@ -15,7 +20,7 @@ import {
 import { GetProductListParams, IProductListStore } from "./types";
 import ApiRequest from "../ApiRequest";
 
-type PrivatFields = "_productList" | "_quantity";
+type PrivatFields = "_productList" | "_quantity" | "_categoryList";
 
 const BaseURL = "https://api.escuelajs.co/api/v1";
 
@@ -25,15 +30,24 @@ export default class ProductListStore
   private readonly _apiRequest = new ApiRequest(BaseURL);
   private _productList: ProductModel[] = [];
   private _quantity: number = 0;
+  private _categoryList: CategoryModel[] = [];
+  showFilter: boolean = false;
+  categoryIsSelected: boolean = false;
 
   constructor() {
     makeObservable<ProductListStore, PrivatFields>(this, {
       _productList: observable.ref,
       _quantity: observable,
+      _categoryList: observable,
+      showFilter: observable,
+      categoryIsSelected: observable,
       productList: computed,
       quantity: computed,
       currentPage: computed,
       getProductList: action,
+      toggleFilter: action,
+      getCategoryList: action,
+      selectCategory: action,
     });
   }
 
@@ -49,6 +63,18 @@ export default class ProductListStore
     return Number(rootStore.query.getParam("page"));
   }
 
+  get categoryList(): CategoryModel[] {
+    return this._categoryList;
+  }
+
+  toggleFilter = () => {
+    this.showFilter = !this.showFilter;
+  };
+
+  selectCategory = () => {
+    this.categoryIsSelected = !this.categoryIsSelected;
+  };
+
   async getProductList(params: GetProductListParams): Promise<void> {
     const limit = 9;
     const offset = (params.page! - 1) * limit;
@@ -58,6 +84,9 @@ export default class ProductListStore
     if (params.value) {
       urlProducts = `/products?title=${params.value}&offset=${offset}&limit=${limit}`;
       urlQuantity = `/products/?title=${params.value}`;
+    } else if (params.categoryId) {
+      urlProducts = `/products/?categoryId=${params.categoryId}&offset=${offset}&limit=${limit}`;
+      urlQuantity = `/products/?categoryId=${params.categoryId}`;
     } else {
       urlProducts = `/products?offset=${offset}&limit=${limit}`;
       urlQuantity = `/products`;
@@ -80,9 +109,20 @@ export default class ProductListStore
     () => this.currentPage,
     (page: number) => {
       const value = String(rootStore.query.getParam("query"));
-      this.getProductList({ page, value });
+      const categoryId = Number(rootStore.query.getParam("categoryId"));
+      this.getProductList({ page, value, categoryId });
     }
   );
+
+  async getCategoryList() {
+    const response = await this._apiRequest.sendRequest({
+      method: HttpMethod.GET,
+      url: `/categories`,
+    });
+    runInAction(() => {
+      this._categoryList = response.data.map(normalizeCategory);
+    });
+  }
 
   destroy(): void {}
 }
