@@ -15,6 +15,10 @@ export const usePagination = ({
 }: usePaginationProps) => {
   const pageArray = useMemo<(string | number)[]>(() => {
     const totalPages = Math.ceil(totalProducts / productsPerPage);
+    const totalPageNumbers = 7;
+    if (totalPageNumbers >= totalPages) {
+      return range(1, totalPages);
+    }
     const leftPageIndex = Math.max(currentPage - 1, 1);
     const rightPageIndex = Math.min(currentPage + 1, totalPages);
     const showLeftEllipsis = leftPageIndex > 3;

@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import styles from "./TitleCatalog.module.scss";
 
 export type TitleCatalogProps = {
@@ -13,4 +15,4 @@ const TitleCatalog: React.FC<TitleCatalogProps> = ({ quantity }) => {
   );
 };
 
-export default TitleCatalog;
+export default memo(TitleCatalog);

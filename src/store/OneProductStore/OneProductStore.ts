@@ -1,4 +1,5 @@
 import ApiRequest from "@store/ApiRequest";
+import { normalizeProduct, ProductModel } from "@store/models/products";
 import { HttpMethod } from "@utils/httpMethod";
 import { ILocalStore } from "@utils/useLocalStore";
 import {
@@ -8,7 +9,6 @@ import {
   observable,
   runInAction,
 } from "mobx";
-import { Product } from "src/App/MainPage/components/Catalog";
 
 import { GetOneProductParams, IOneProductStore } from "./types";
 
@@ -18,8 +18,8 @@ const BaseURL = "https://api.escuelajs.co/api/v1";
 
 export default class OneProductStore implements IOneProductStore, ILocalStore {
   private readonly _apiRequest = new ApiRequest(BaseURL);
-  private _product: Product | null = null;
-  private _relatedItems: Product[] = [];
+  private _product: ProductModel | null = null;
+  private _relatedItems: ProductModel[] = [];
   imageIndex: number = 0;
   prevDisabled: boolean = true;
   nextDisabled: boolean = false;
@@ -43,11 +43,11 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
     });
   }
 
-  get product(): Product | null {
+  get product(): ProductModel | null {
     return this._product;
   }
 
-  get relatedItems(): Product[] {
+  get relatedItems(): ProductModel[] {
     return this._relatedItems;
   }
 
@@ -61,12 +61,12 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
       url: `/categories/${response.data.category.id}/products`,
     });
     runInAction(() => {
-      this._product = response.data;
+      this._product = normalizeProduct(response.data);
       this._relatedItems = [];
       while (this._relatedItems.length < 3) {
         let item = Math.floor(Math.random() * relatedResponse.data.length);
         if (!this._relatedItems.includes(relatedResponse.data[item])) {
-          this._relatedItems.push(relatedResponse.data[item]);
+          this._relatedItems.push(normalizeProduct(relatedResponse.data[item]));
         }
       }
     });

@@ -1,3 +1,4 @@
+import { normalizeProduct, ProductModel } from "@store/models/products";
 import rootStore from "@store/RootStore/instance";
 import { HttpMethod } from "@utils/httpMethod";
 import { ILocalStore } from "@utils/useLocalStore";
@@ -10,13 +11,8 @@ import {
   reaction,
   runInAction,
 } from "mobx";
-import { Product } from "src/App/MainPage/components/Catalog";
 
-import {
-  GetProductListParams,
-  GetSearchProductsParams,
-  IProductListStore,
-} from "./types";
+import { GetProductListParams, IProductListStore } from "./types";
 import ApiRequest from "../ApiRequest";
 
 type PrivatFields = "_productList" | "_quantity";
@@ -27,7 +23,7 @@ export default class ProductListStore
   implements IProductListStore, ILocalStore
 {
   private readonly _apiRequest = new ApiRequest(BaseURL);
-  private _productList: Product[] = [];
+  private _productList: ProductModel[] = [];
   private _quantity: number = 0;
 
   constructor() {
@@ -38,11 +34,10 @@ export default class ProductListStore
       quantity: computed,
       currentPage: computed,
       getProductList: action,
-      getQuantity: action,
     });
   }
 
-  get productList(): Product[] {
+  get productList(): ProductModel[] {
     return this._productList;
   }
 
@@ -55,50 +50,39 @@ export default class ProductListStore
   }
 
   async getProductList(params: GetProductListParams): Promise<void> {
+    const limit = 9;
+    const offset = (params.page! - 1) * limit;
     this._productList = [];
+    let urlProducts = "";
+    let urlQuantity = "";
+    if (params.value) {
+      urlProducts = `/products?title=${params.value}&offset=${offset}&limit=${limit}`;
+      urlQuantity = `/products/?title=${params.value}`;
+    } else {
+      urlProducts = `/products?offset=${offset}&limit=${limit}`;
+      urlQuantity = `/products`;
+    }
     const response = await this._apiRequest.sendRequest({
       method: HttpMethod.GET,
-      url: `/products?offset=${params.offset}&limit=${params.limit}`,
+      url: urlProducts,
+    });
+    const quantity = await this._apiRequest.sendRequest({
+      method: HttpMethod.GET,
+      url: urlQuantity,
     });
     runInAction(() => {
-      this._productList = response.data;
+      this._productList = response.data.map(normalizeProduct);
+      this._quantity = quantity.data.length;
     });
   }
 
   private readonly _qpReaction: IReactionDisposer = reaction(
-    () => rootStore.query.getParam("page"),
-    (page: any) => {
-      const pageNumber = Number(page);
-      const offset: number = (pageNumber - 1) * 9;
-      this.getProductList({ limit: 9, offset: offset });
+    () => this.currentPage,
+    (page: number) => {
+      const value = String(rootStore.query.getParam("query"));
+      this.getProductList({ page, value });
     }
   );
 
-  private readonly _qsReaction: IReactionDisposer = reaction(
-    () => rootStore.query.input,
-    (input) => {
-      this.getSearchProducts({ value: input });
-    }
-  );
-
-  async getQuantity(): Promise<void> {
-    const response = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: `/products`,
-    });
-    runInAction(() => {
-      this._quantity = response.data.length;
-    });
-  }
-
-  async getSearchProducts(params: GetSearchProductsParams): Promise<void> {
-    const response = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: `/products/?title=${params.value}`,
-    });
-    runInAction(() => {
-      this._productList = response.data;
-    });
-  }
   destroy(): void {}
 }

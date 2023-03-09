@@ -1,11 +1,11 @@
 import Card from "@components/Card";
+import { ProductModel } from "@store/models/products";
 import { useNavigate } from "react-router-dom";
-import { Product } from "src/App/MainPage/components/Catalog";
 
 import styles from "./RelatedItems.module.scss";
 
 export type RelatedItemsProps = {
-  items: Product[];
+  items: ProductModel[];
 };
 
 const RelatedItems = ({ items }: RelatedItemsProps) => {
@@ -15,7 +15,7 @@ const RelatedItems = ({ items }: RelatedItemsProps) => {
     <div className={styles.items_container}>
       <h4 className={styles.items_title}>Related Items</h4>
       <div className={styles.items}>
-        {items.map((item: Product) => (
+        {items.map((item: ProductModel) => (
           <Card
             key={item.id}
             image={item.images[0]}
