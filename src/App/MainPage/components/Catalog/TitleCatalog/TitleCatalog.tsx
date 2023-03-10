@@ -1,4 +1,4 @@
-import { memo } from "react";
+import * as React from "react";
 
 import styles from "./TitleCatalog.module.scss";
 
@@ -23,4 +23,4 @@ const TitleCatalog: React.FC<TitleCatalogProps> = ({
   );
 };
 
-export default memo(TitleCatalog);
+export default React.memo(TitleCatalog);

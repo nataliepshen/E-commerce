@@ -1,17 +1,18 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
-import { IApiRequest, SendRequestParams } from "./types";
+import { IApiRequest } from "./types";
+
+const BASE_URL = "https://api.escuelajs.co/api/v1";
 
 export default class ApiRequest implements IApiRequest {
-  baseURL: string;
-  constructor(baseUrl: string) {
-    this.baseURL = baseUrl;
-  }
-  sendRequest = async (params: SendRequestParams) => {
-    const instance = axios.create({
-      baseURL: this.baseURL,
+  private _instance: AxiosInstance;
+  constructor() {
+    this._instance = axios.create({
+      baseURL: BASE_URL,
     });
-    const response = await instance(params);
+  }
+  sendRequest = async (url: string) => {
+    const response = await this._instance.get(url);
     return response;
   };
 }

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./Button.module.scss";
 
 export type ButtonProps = React.PropsWithChildren<{
-  onClick?: () => void;
+  onClick?: VoidFunction;
   className?: string;
 }>;
 

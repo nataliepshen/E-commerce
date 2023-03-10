@@ -5,8 +5,8 @@ export type ProductImageProps = {
   index: number;
   prevDisabled: boolean;
   nextDisabled: boolean;
-  next: () => void;
-  prev: () => void;
+  next: VoidFunction;
+  prev: VoidFunction;
 };
 
 const ProductImage: React.FC<ProductImageProps> = ({
@@ -24,12 +24,12 @@ const ProductImage: React.FC<ProductImageProps> = ({
         className={`${styles.img_button} ${styles.button_prev}`}
         onClick={prev}
         disabled={prevDisabled}
-      ></button>
+      />
       <button
         className={`${styles.img_button} ${styles.button_next}`}
         onClick={next}
         disabled={nextDisabled}
-      ></button>
+      />
     </div>
   );
 };

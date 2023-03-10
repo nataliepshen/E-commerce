@@ -37,11 +37,6 @@
         color: $dark;
     }
   }
-  .find_button {
-    position: absolute;
-    top: 15px;
-    right: 28px;
-  }
 }
 .search_icon::before {
     background: url(~@assets/search.svg);

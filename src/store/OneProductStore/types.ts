@@ -1,9 +1,6 @@
-export type GetOneProductParams = {
-  id: string | undefined;
-};
-
 export interface IOneProductStore {
-  getOneProduct(params: GetOneProductParams): Promise<void>;
+  id: string;
+  getOneProduct(id: string): Promise<void>;
 }
 
 export type GetRelatedItemsParams = {

@@ -1,11 +1,7 @@
-import {
-  CategoryModel,
-  normalizeCategory,
-  normalizeProduct,
-  ProductModel,
-} from "@store/models/products";
+import { CategoryModel } from "@store/models/categories";
+import { normalizeCategory, normalizeProduct } from "@store/models/normalize";
+import { ProductModel } from "@store/models/products";
 import rootStore from "@store/RootStore/instance";
-import { HttpMethod } from "@utils/httpMethod";
 import { ILocalStore } from "@utils/useLocalStore";
 import {
   action,
@@ -22,17 +18,15 @@ import ApiRequest from "../ApiRequest";
 
 type PrivatFields = "_productList" | "_quantity" | "_categoryList";
 
-const BaseURL = "https://api.escuelajs.co/api/v1";
-
+const ITEMS_LIMIT: number = 9;
 export default class ProductListStore
   implements IProductListStore, ILocalStore
 {
-  private readonly _apiRequest = new ApiRequest(BaseURL);
+  private readonly _apiRequest = new ApiRequest();
   private _productList: ProductModel[] = [];
   private _quantity: number = 0;
   private _categoryList: CategoryModel[] = [];
   showFilter: boolean = false;
-  categoryIsSelected: boolean = false;
 
   constructor() {
     makeObservable<ProductListStore, PrivatFields>(this, {
@@ -40,14 +34,11 @@ export default class ProductListStore
       _quantity: observable,
       _categoryList: observable,
       showFilter: observable,
-      categoryIsSelected: observable,
       productList: computed,
       quantity: computed,
-      currentPage: computed,
-      getProductList: action,
-      toggleFilter: action,
-      getCategoryList: action,
-      selectCategory: action,
+      getProductList: action.bound,
+      toggleFilter: action.bound,
+      getCategoryList: action.bound,
     });
   }
 
@@ -59,10 +50,6 @@ export default class ProductListStore
     return this._quantity;
   }
 
-  get currentPage(): number {
-    return Number(rootStore.query.getParam("page"));
-  }
-
   get categoryList(): CategoryModel[] {
     return this._categoryList;
   }
@@ -71,34 +58,23 @@ export default class ProductListStore
     this.showFilter = !this.showFilter;
   };
 
-  selectCategory = () => {
-    this.categoryIsSelected = !this.categoryIsSelected;
-  };
-
   async getProductList(params: GetProductListParams): Promise<void> {
-    const limit = 9;
-    const offset = (params.page! - 1) * limit;
+    const offset = (params.page! - 1) * ITEMS_LIMIT;
     this._productList = [];
     let urlProducts = "";
     let urlQuantity = "";
     if (params.value) {
-      urlProducts = `/products?title=${params.value}&offset=${offset}&limit=${limit}`;
+      urlProducts = `/products?title=${params.value}&offset=${offset}&limit=${ITEMS_LIMIT}`;
       urlQuantity = `/products/?title=${params.value}`;
     } else if (params.categoryId) {
-      urlProducts = `/products/?categoryId=${params.categoryId}&offset=${offset}&limit=${limit}`;
+      urlProducts = `/products/?categoryId=${params.categoryId}&offset=${offset}&limit=${ITEMS_LIMIT}`;
       urlQuantity = `/products/?categoryId=${params.categoryId}`;
     } else {
-      urlProducts = `/products?offset=${offset}&limit=${limit}`;
+      urlProducts = `/products?offset=${offset}&limit=${ITEMS_LIMIT}`;
       urlQuantity = `/products`;
     }
-    const response = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: urlProducts,
-    });
-    const quantity = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: urlQuantity,
-    });
+    const response = await this._apiRequest.sendRequest(urlProducts);
+    const quantity = await this._apiRequest.sendRequest(urlQuantity);
     runInAction(() => {
       this._productList = response.data.map(normalizeProduct);
       this._quantity = quantity.data.length;
@@ -106,7 +82,7 @@ export default class ProductListStore
   }
 
   private readonly _qpReaction: IReactionDisposer = reaction(
-    () => this.currentPage,
+    () => Number(rootStore.query.getParam("page")),
     (page: number) => {
       const value = String(rootStore.query.getParam("query"));
       const categoryId = Number(rootStore.query.getParam("categoryId"));
@@ -115,14 +91,13 @@ export default class ProductListStore
   );
 
   async getCategoryList() {
-    const response = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: `/categories`,
-    });
+    const response = await this._apiRequest.sendRequest(`/categories`);
     runInAction(() => {
       this._categoryList = response.data.map(normalizeCategory);
     });
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this._qpReaction();
+  }
 }

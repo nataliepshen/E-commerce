@@ -3,15 +3,13 @@ export type CategoryApi = {
   name: string;
   image: string;
   creationAt: string;
-  uodatedAt: string;
+  updatedAt: string;
 };
 
 export type CategoryModel = {
   id: string;
   name: string;
+  image: string;
+  creationAt: Date;
+  updatedAt: Date;
 };
-
-export const normalizeCategory = (from: CategoryApi): CategoryModel => ({
-  id: String(from.id),
-  name: from.name,
-});

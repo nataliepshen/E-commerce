@@ -1,4 +1,4 @@
-import { CategoryApi, CategoryModel, normalizeCategory } from "./categories";
+import { CategoryApi, CategoryModel } from "../categories";
 
 export type ProductApi = {
   id: number;
@@ -8,7 +8,7 @@ export type ProductApi = {
   description: string;
   price: number;
   creationAt: string;
-  uodatedAt: string;
+  updatedAt: string;
 };
 
 export type ProductModel = {
@@ -18,13 +18,6 @@ export type ProductModel = {
   description: string;
   category: CategoryModel;
   price: number;
+  creationAt: Date;
+  updatedAt: Date;
 };
-
-export const normalizeProduct = (from: ProductApi): ProductModel => ({
-  id: from.id,
-  title: from.title,
-  images: from.images,
-  category: normalizeCategory(from.category),
-  description: from.description,
-  price: from.price,
-});

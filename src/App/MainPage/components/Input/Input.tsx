@@ -1,6 +1,4 @@
-import { memo } from "react";
-
-import Button from "@components/Button";
+import * as React from "react";
 
 import styles from "./Input.module.scss";
 
@@ -10,10 +8,10 @@ export type InputProps = Omit<
 > & {
   value: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
+  children?: React.ReactNode;
 };
 
-const Input: React.FC<InputProps> = ({ value, handleChange, onClick }) => {
+const Input: React.FC<InputProps> = ({ value, handleChange, children }) => {
   return (
     <div className={`${styles.input_field} ${styles.search_icon}`}>
       <input
@@ -23,11 +21,9 @@ const Input: React.FC<InputProps> = ({ value, handleChange, onClick }) => {
         className={styles.input}
         placeholder="Search property"
       />
-      <Button className={styles.find_button} onClick={onClick}>
-        Find Now
-      </Button>
+      {children}
     </div>
   );
 };
 
-export default memo(Input);
+export default React.memo(Input);

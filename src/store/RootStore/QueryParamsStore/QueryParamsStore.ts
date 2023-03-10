@@ -8,10 +8,11 @@ export default class QueryParamsStore {
   private _search: string = "";
 
   constructor() {
+    this.getParam = this.getParam.bind(this);
     makeObservable<QueryParamsStore, PrivatFields>(this, {
       _params: observable.ref,
       allParams: computed,
-      setSearch: action,
+      setSearch: action.bound,
     });
   }
 

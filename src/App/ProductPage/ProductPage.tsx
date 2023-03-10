@@ -1,15 +1,52 @@
+import * as React from "react";
+
 import Container from "@components/Container";
+import OneProductStore from "@store/OneProductStore";
+import { useLocalStore } from "@utils/useLocalStore";
+import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 
-import ProductCard from "./components/ProductCard";
+import ProductImage from "./components/ProductCard/ProductImage";
+import ProductInfo from "./components/ProductCard/ProductInfo";
+import RelatedItems from "./components/ProductCard/RelatedItems";
+import styles from "./ProductPage.module.scss";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams();
+  const oneProductStore = useLocalStore(() => new OneProductStore(String(id)));
+
+  React.useEffect(() => {
+    oneProductStore.getOneProduct(String(id));
+  }, [id, oneProductStore]);
+  React.useEffect(() => {
+    window.scrollTo({ behavior: "smooth", top: 200 });
+  }, [id]);
   return (
     <Container>
-      <ProductCard id={id} />
+      <div>
+        {oneProductStore.product && (
+          <div>
+            <div className={styles.card}>
+              <ProductImage
+                images={oneProductStore.product.images}
+                index={oneProductStore.imageIndex}
+                prevDisabled={oneProductStore.prevDisabled}
+                nextDisabled={oneProductStore.nextDisabled}
+                prev={oneProductStore.prev}
+                next={oneProductStore.next}
+              />
+              <ProductInfo
+                name={oneProductStore.product.title}
+                description={oneProductStore.product.description}
+                price={oneProductStore.product.price}
+              />
+            </div>
+            <RelatedItems items={oneProductStore.relatedItems} />
+          </div>
+        )}
+      </div>
     </Container>
   );
 };
 
-export default ProductPage;
+export default observer(ProductPage);

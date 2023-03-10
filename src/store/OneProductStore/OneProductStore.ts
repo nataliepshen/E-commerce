@@ -1,6 +1,7 @@
 import ApiRequest from "@store/ApiRequest";
-import { normalizeProduct, ProductModel } from "@store/models/products";
-import { HttpMethod } from "@utils/httpMethod";
+import { normalizeProduct } from "@store/models/normalize";
+import { ProductModel } from "@store/models/products";
+import { getRandomRelatedItems } from "@utils/getRandomRelatedItems";
 import { ILocalStore } from "@utils/useLocalStore";
 import {
   action,
@@ -10,21 +11,21 @@ import {
   runInAction,
 } from "mobx";
 
-import { GetOneProductParams, IOneProductStore } from "./types";
+import { IOneProductStore } from "./types";
 
 type PrivatFields = "_product" | "_relatedItems";
 
-const BaseURL = "https://api.escuelajs.co/api/v1";
-
 export default class OneProductStore implements IOneProductStore, ILocalStore {
-  private readonly _apiRequest = new ApiRequest(BaseURL);
+  id: string = "";
+  private readonly _apiRequest = new ApiRequest();
   private _product: ProductModel | null = null;
   private _relatedItems: ProductModel[] = [];
   imageIndex: number = 0;
   prevDisabled: boolean = true;
   nextDisabled: boolean = false;
 
-  constructor() {
+  constructor(id: string) {
+    this.id = id;
     makeObservable<OneProductStore, PrivatFields>(this, {
       _product: observable.ref,
       _relatedItems: observable.ref,
@@ -33,13 +34,13 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
       nextDisabled: observable,
       product: computed,
       relatedItems: computed,
-      getOneProduct: action,
-      setNextTrue: action,
-      setNextFalse: action,
-      setPrevFalse: action,
-      setPrevTrue: action,
-      next: action,
-      prev: action,
+      getOneProduct: action.bound,
+      setNextTrue: action.bound,
+      setNextFalse: action.bound,
+      setPrevFalse: action.bound,
+      setPrevTrue: action.bound,
+      next: action.bound,
+      prev: action.bound,
     });
   }
 
@@ -51,24 +52,14 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
     return this._relatedItems;
   }
 
-  async getOneProduct(params: GetOneProductParams): Promise<void> {
-    const response = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: `/products/${params.id}`,
-    });
-    const relatedResponse = await this._apiRequest.sendRequest({
-      method: HttpMethod.GET,
-      url: `/categories/${response.data.category.id}/products`,
-    });
+  async getOneProduct(id: string): Promise<void> {
+    const response = await this._apiRequest.sendRequest(`/products/${id}`);
+    const relatedResponse = await this._apiRequest.sendRequest(
+      `/categories/${response.data.category.id}/products`
+    );
     runInAction(() => {
       this._product = normalizeProduct(response.data);
-      this._relatedItems = [];
-      while (this._relatedItems.length < 3) {
-        let item = Math.floor(Math.random() * relatedResponse.data.length);
-        if (!this._relatedItems.includes(relatedResponse.data[item])) {
-          this._relatedItems.push(normalizeProduct(relatedResponse.data[item]));
-        }
-      }
+      this._relatedItems = getRandomRelatedItems(relatedResponse.data);
     });
   }
 

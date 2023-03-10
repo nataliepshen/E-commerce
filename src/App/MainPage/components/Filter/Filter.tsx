@@ -1,14 +1,15 @@
-import { CategoryModel } from "@store/models/products";
+import * as React from "react";
+
+import { CategoryModel } from "@store/models/categories";
 import rootStore from "@store/RootStore/instance";
 import classnames from "classnames/bind";
 
 import styles from "./Filter.module.scss";
 
 export type FilterProps = {
-  handleClickFilter: () => void;
+  handleClickFilter: VoidFunction;
   showItems: boolean;
   categoryList: CategoryModel[];
-  selected: boolean;
   setCategory: (id: string) => void;
 };
 
@@ -16,7 +17,6 @@ const Filter: React.FC<FilterProps> = ({
   handleClickFilter,
   showItems,
   categoryList,
-  selected,
   setCategory,
 }) => {
   const cx = classnames.bind(styles);
@@ -53,4 +53,4 @@ const Filter: React.FC<FilterProps> = ({
   );
 };
 
-export default Filter;
+export default React.memo(Filter);

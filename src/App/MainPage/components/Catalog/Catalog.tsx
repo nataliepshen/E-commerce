@@ -1,4 +1,4 @@
-import { memo } from "react";
+import * as React from "react";
 
 import Card from "@components/Card";
 import { ProductModel } from "@store/models/products";
@@ -38,4 +38,4 @@ const Catalog: React.FC<CatalogProps> = ({ quantity, list, categoryName }) => {
   );
 };
 
-export default memo(Catalog);
+export default React.memo(Catalog);

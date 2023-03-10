@@ -1,5 +1,6 @@
-import { useCallback, useEffect } from "react";
+import * as React from "react";
 
+import Button from "@components/Button";
 import Container from "@components/Container";
 import Pagination from "@components/Pagination";
 import ProductListStore from "@store/ProductListStore";
@@ -24,7 +25,7 @@ const MainPage: React.FC = () => {
 
   rootStore.query.setSearch(searchParams.toString());
 
-  const setCurrentPage = useCallback(
+  const setCurrentPage = React.useCallback(
     (page: number) => {
       setSearchParams({
         ...rootStore.query.allParams,
@@ -36,7 +37,7 @@ const MainPage: React.FC = () => {
 
   const currentPage = Number(rootStore.query.getParam("page"));
 
-  const handleChange = useCallback(
+  const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchParams({
         ...rootStore.query.allParams,
@@ -48,38 +49,37 @@ const MainPage: React.FC = () => {
 
   const value = String(rootStore.query.getParam("query"));
 
-  useEffect(() => {
+  React.useEffect(() => {
     productListStore.getProductList({
       page: currentPage,
       value: value,
     });
   }, [currentPage, productListStore, value]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     productListStore.getCategoryList();
   }, [productListStore]);
 
-  const onClick = useCallback(() => {
+  const onClick = React.useCallback(() => {
     productListStore.getProductList({
       page: currentPage,
       value: value,
     });
   }, [currentPage, productListStore, value]);
 
-  const setCategoryId = useCallback(
+  const setCategoryId = React.useCallback(
     (id: string) => {
       setSearchParams({
         ...rootStore.query.allParams,
         categoryId: id,
       });
-      productListStore.selectCategory();
     },
-    [productListStore, setSearchParams]
+    [setSearchParams]
   );
   const categoryId = String(rootStore.query.getParam("categoryId"));
   const categoryName =
     productListStore.categoryList[Number(categoryId) - 1]?.name;
-  useEffect(() => {
+  React.useEffect(() => {
     productListStore.getProductList({
       page: currentPage,
       categoryId: Number(categoryId),
@@ -90,12 +90,19 @@ const MainPage: React.FC = () => {
     <Container>
       <Heading />
       <div className={styles.search_filter}>
-        <Input value={value} handleChange={handleChange} onClick={onClick} />
+        <Input
+          value={value}
+          handleChange={handleChange}
+          children={
+            <Button className={styles.find_button} onClick={onClick}>
+              Find Now
+            </Button>
+          }
+        />
         <Filter
           handleClickFilter={productListStore.toggleFilter}
           showItems={productListStore.showFilter}
           categoryList={productListStore.categoryList}
-          selected={productListStore.categoryIsSelected}
           setCategory={setCategoryId}
         />
       </div>

@@ -1,8 +1,5 @@
-export interface IApiRequest {
-  baseURL: string;
-}
+import { AxiosResponse } from "axios";
 
-export type SendRequestParams = {
-  method: string;
-  url: string;
-};
+export interface IApiRequest {
+  sendRequest: (url: string) => Promise<AxiosResponse>;
+}
