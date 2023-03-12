@@ -22,8 +22,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       <div>
         <h2 className={styles.prod_price}>{`$${price.toFixed(2)}`}</h2>
         <div className={styles.btn_container}>
-          <Button className={styles.buy_btn} children="Buy Now"></Button>
-          <Button className={styles.add_btn} children="Add to Cart"></Button>
+          <Button className={styles.buy_btn}>Buy Now</Button>
+          <Button className={styles.add_btn}>Add to Cart</Button>
         </div>
       </div>
     </div>

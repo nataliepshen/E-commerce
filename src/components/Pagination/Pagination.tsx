@@ -1,4 +1,7 @@
-import usePagination, { usePaginationProps } from "@components/usePagination";
+import { useCallback } from "react";
+
+import { usePagination, usePaginationProps } from "@components/usePagination";
+import classNames from "classnames";
 import classnames from "classnames/bind";
 
 import styles from "./Pagination.module.scss";
@@ -20,29 +23,30 @@ const Pagination: React.FC<PaginationProps> = ({
     currentPage,
   });
 
-  const onNext = () => {
+  const onNext = useCallback(() => {
     onPageChange(currentPage + 1);
-  };
+  }, [currentPage, onPageChange]);
 
-  const onPrev = () => {
+  const onPrev = useCallback(() => {
     onPageChange(currentPage - 1);
-  };
-  let lastPage = pageArray[pageArray.length - 1];
-  let cx = classnames.bind(styles);
+  }, [currentPage, onPageChange]);
+
+  const lastPage = pageArray[pageArray.length - 1];
+  const cx = classnames.bind(styles);
   return (
     <div className={styles.container}>
       <button
-        className={`${styles.button} ${styles.btn_prev}`}
+        className={classNames(styles.button, styles.btn_prev)}
         disabled={currentPage === 1}
         onClick={onPrev}
-      ></button>
+      />
       <ul className={styles.page_list}>
         {pageArray.map((page) => {
           if (typeof page === "string") {
             return (
               <li
                 key={Math.random() * 100}
-                className={`${styles.page_item} ${styles.ellipsis}`}
+                className={classNames(styles.page_item, styles.ellipsis)}
               >
                 {"..."}
               </li>
@@ -66,7 +70,7 @@ const Pagination: React.FC<PaginationProps> = ({
         className={styles.button}
         disabled={currentPage === lastPage}
         onClick={onNext}
-      ></button>
+      />
     </div>
   );
 };

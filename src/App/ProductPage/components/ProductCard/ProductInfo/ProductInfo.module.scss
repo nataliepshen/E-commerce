@@ -1,31 +1,31 @@
-@import "./../../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .info_container {
     width: 590px;
     height: 600px;
-    @include flex-between();
+    @include flex-between;
     flex-direction: column;
 }
 .prod_name {
-    @include font-700();
+    @include font-700;
     font-size: 44px;
     color: $dark;
     margin: 32px 0 0 0;
 }
 .prod_description {
-    @include font-500();
+    @include font-500;
     color: $grey;
     margin: 20px 0 0 0;
 }
 .prod_price {
-    @include font-700();
+    @include font-700;
     font-size: 44px;
     color: $dark;
     margin: 0 0 50px 0;
 }
 .btn_container {
     width: 100%;
-    @include flex-between();
+    @include flex-between;
     margin: 0 0 134px 0;
 }
 .buy_btn {
@@ -35,7 +35,7 @@
 .add_btn {
     width: 285px;
     height: 58px;
-    background: #ffffff;
+    background: $white;
     color: $dark;
     border: 2px solid #f3f3f3;
 }

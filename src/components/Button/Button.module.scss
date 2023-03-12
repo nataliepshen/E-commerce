@@ -1,11 +1,11 @@
-@import "./../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .button {
     width: 138px;
     height: 54px;
     background: $mint;
-    color: #ffffff;
-    @include font-700();
+    color: $white;
+    @include font-700;
     font-size: 18px;
     text-align: center;
     border: none;

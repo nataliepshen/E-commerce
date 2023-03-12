@@ -7,10 +7,10 @@ const NavSections: React.FC = () => {
   return (
     <div className={styles.navSections}>
       <Link to="/">
-        <Section active children="Products" />
+        <Section active>Products</Section>
       </Link>
-      <Section children="Categories" />
-      <Section children="About Us" />
+      <Section>Categories</Section>
+      <Section>About Us</Section>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-@import "./../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .card {
     max-width: 394px;
@@ -17,13 +17,13 @@
 }
 .categoryHeader {
     margin: 0 0 14px 0;
-    @include font-700();
+    @include font-700;
     font-size: 18px;
     color: $grey;
 }
 .titleHeader {
     margin: 0 0 6px 0;
-    @include font-700();
+    @include font-700;
     font-size: 26px;
     letter-spacing: 0.01em;
     color: $dark;
@@ -33,7 +33,7 @@
 }
 .subHeader, .subHeader a {
     margin: 0;
-    @include font-500();
+    @include font-500;
     color: $grey;
     white-space: nowrap;
     overflow: hidden;
@@ -41,7 +41,7 @@
 }
 .contentHeader {
     margin: 18px 0 0 0;
-    @include font-700();
+    @include font-700;
     font-size: 24px;
     color: $dark;
 }

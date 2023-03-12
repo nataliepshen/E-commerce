@@ -1,16 +1,16 @@
-@import "./../../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .items_container {
     width: 100%;
 }
 .items_title {
-    @include font-700();
+    @include font-700;
     font-size: 32px;
     color: $dark;
     margin: 0 0 30px 0;
 }
 .items {
     width: 100%;
-    @include flex-between();
+    @include flex-between;
     margin-bottom: 54px;
 }

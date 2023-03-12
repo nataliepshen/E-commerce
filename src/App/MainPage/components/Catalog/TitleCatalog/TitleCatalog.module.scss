@@ -1,4 +1,4 @@
-@import "./../../../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .title_container {
     width: 100%;
@@ -8,7 +8,7 @@
     margin-bottom: 50px;
 }
 .titleCat {
-    @include font-700();
+    @include font-700;
     font-size: 44px;
     color: $dark;
     margin: 0 10px 0 0;
@@ -18,7 +18,7 @@
     border-radius: 20px;
     padding: 4.5px 16px;
     color: $mint;
-    @include font-700();
+    @include font-700;
     font-size: 16px;
     display: flex;
     justify-content: center;

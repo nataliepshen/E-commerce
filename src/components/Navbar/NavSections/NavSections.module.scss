@@ -1,7 +1,7 @@
-@import "./../../../styles/variables.scss";
+@import "@styles/variables.scss";
 
 .navSections {
-    @include flex-between();
+    @include flex-between;
     align-items: center;
     width: 376px;
     height: 120px;

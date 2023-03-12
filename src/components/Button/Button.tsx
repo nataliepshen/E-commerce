@@ -3,14 +3,16 @@ import classNames from "classnames";
 import styles from "./Button.module.scss";
 
 export type ButtonProps = React.PropsWithChildren<{
+  onClick?: VoidFunction;
   className?: string;
-}> &
-  React.ButtonHTMLAttributes<HTMLButtonElement>;
+}>;
 
-const Button: React.FC<ButtonProps> = ({ children, className }) => {
-  let buttonClass = classNames(`${styles.button}`, className);
-
-  return <button className={buttonClass}>{children}</button>;
+const Button: React.FC<ButtonProps> = ({ children, className, onClick }) => {
+  return (
+    <button className={classNames(styles.button, className)} onClick={onClick}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;

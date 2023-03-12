@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import styles from "./Heading.module.scss";
 
 const Heading: React.FC = () => {
@@ -12,4 +14,4 @@ const Heading: React.FC = () => {
   );
 };
 
-export default Heading;
+export default React.memo(Heading);
