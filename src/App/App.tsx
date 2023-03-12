@@ -1,6 +1,8 @@
-import Navbar from "@components/Navbar";
-import { useQueryParamsStoreInit } from "@store/RootStore/hooks/useQueryParamsStoreInit";
+import React from "react";
+
+import Navbar from "components/Navbar";
 import { Route, Routes } from "react-router-dom";
+import { useQueryParamsStoreInit } from "store/RootStore/hooks/useQueryParamsStoreInit";
 
 import MainPage from "./MainPage";
 import ProductPage from "./ProductPage";

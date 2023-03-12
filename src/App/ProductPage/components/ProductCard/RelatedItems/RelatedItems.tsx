@@ -1,6 +1,8 @@
-import Card from "@components/Card";
-import { ProductModel } from "@store/models/products";
+import * as React from "react";
+
+import Card from "components/Card";
 import { useNavigate } from "react-router-dom";
+import { ProductModel } from "store/models/products";
 
 import styles from "./RelatedItems.module.scss";
 
@@ -8,7 +10,9 @@ export type RelatedItemsProps = {
   items: ProductModel[];
 };
 
-const RelatedItems = ({ items }: RelatedItemsProps) => {
+const RelatedItems: React.FC<RelatedItemsProps> = ({
+  items,
+}: RelatedItemsProps) => {
   const navigate = useNavigate();
 
   return (

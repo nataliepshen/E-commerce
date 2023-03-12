@@ -1,3 +1,5 @@
+import React from "react";
+
 import CartIcon from "./CartIcon";
 import styles from "./Icons.module.scss";
 import UserIcon from "./UserIcon";

@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import Card from "@components/Card";
-import { ProductModel } from "@store/models/products";
+import Card from "components/Card";
 import { useNavigate } from "react-router-dom";
+import { ProductModel } from "store/models/products";
 
 import styles from "./Catalog.module.scss";
 import TitleCatalog from "./TitleCatalog";
@@ -38,4 +38,4 @@ const Catalog: React.FC<CatalogProps> = ({ quantity, list, categoryName }) => {
   );
 };
 
-export default React.memo(Catalog);
+export default Catalog;

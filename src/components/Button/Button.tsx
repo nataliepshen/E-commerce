@@ -1,3 +1,5 @@
+import React from "react";
+
 import classNames from "classnames";
 
 import styles from "./Button.module.scss";
@@ -15,4 +17,4 @@ const Button: React.FC<ButtonProps> = ({ children, className, onClick }) => {
   );
 };
 
-export default Button;
+export default React.memo(Button);

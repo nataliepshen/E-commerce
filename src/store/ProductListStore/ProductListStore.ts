@@ -1,8 +1,3 @@
-import { CategoryModel } from "@store/models/categories";
-import { normalizeCategory, normalizeProduct } from "@store/models/normalize";
-import { ProductModel } from "@store/models/products";
-import rootStore from "@store/RootStore/instance";
-import { ILocalStore } from "@utils/useLocalStore";
 import {
   action,
   computed,
@@ -10,8 +5,12 @@ import {
   makeObservable,
   observable,
   reaction,
-  runInAction,
 } from "mobx";
+import { CategoryModel } from "store/models/categories";
+import { normalizeCategory, normalizeProduct } from "store/models/normalize";
+import { ProductModel } from "store/models/products";
+import rootStore from "store/RootStore/instance";
+import { ILocalStore } from "utils/useLocalStore";
 
 import { GetProductListParams, IProductListStore } from "./types";
 import ApiRequest from "../ApiRequest";
@@ -32,12 +31,15 @@ export default class ProductListStore
     makeObservable<ProductListStore, PrivatFields>(this, {
       _productList: observable.ref,
       _quantity: observable,
-      _categoryList: observable,
+      _categoryList: observable.ref,
       showFilter: observable,
       productList: computed,
       quantity: computed,
-      getProductList: action.bound,
+      setProductList: action.bound,
+      setQuantity: action.bound,
       toggleFilter: action.bound,
+      setCategoryList: action.bound,
+      getProductList: action.bound,
       getCategoryList: action.bound,
     });
   }
@@ -58,6 +60,18 @@ export default class ProductListStore
     this.showFilter = !this.showFilter;
   };
 
+  setProductList(prodList: ProductModel[]) {
+    this._productList = prodList;
+  }
+
+  setQuantity(prodLength: number) {
+    this._quantity = prodLength;
+  }
+
+  setCategoryList(catList: CategoryModel[]) {
+    this._categoryList = catList;
+  }
+
   async getProductList(params: GetProductListParams): Promise<void> {
     const offset = (params.page! - 1) * ITEMS_LIMIT;
     this._productList = [];
@@ -75,10 +89,10 @@ export default class ProductListStore
     }
     const response = await this._apiRequest.sendRequest(urlProducts);
     const quantity = await this._apiRequest.sendRequest(urlQuantity);
-    runInAction(() => {
-      this._productList = response.data.map(normalizeProduct);
-      this._quantity = quantity.data.length;
-    });
+    const products: ProductModel[] = response.data.map(normalizeProduct);
+    /* Вот тут был runInAction, который терял контекст видимо */
+    this.setProductList(products);
+    this.setQuantity(quantity.data.length);
   }
 
   private readonly _qpReaction: IReactionDisposer = reaction(
@@ -86,15 +100,17 @@ export default class ProductListStore
     (page: number) => {
       const value = String(rootStore.query.getParam("query"));
       const categoryId = Number(rootStore.query.getParam("categoryId"));
-      this.getProductList({ page, value, categoryId });
+      if (page) {
+        this.getProductList({ page, value, categoryId });
+      }
     }
   );
 
   async getCategoryList() {
     const response = await this._apiRequest.sendRequest(`/categories`);
-    runInAction(() => {
-      this._categoryList = response.data.map(normalizeCategory);
-    });
+    const categories = response.data.map(normalizeCategory);
+    /* Вот тут был runInAction, который терял контекст видимо */
+    this.setCategoryList(categories);
   }
 
   destroy(): void {
