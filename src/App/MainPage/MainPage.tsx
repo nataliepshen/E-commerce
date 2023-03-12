@@ -1,13 +1,15 @@
 import * as React from "react";
 
-import Button from "@components/Button";
-import Container from "@components/Container";
-import Pagination from "@components/Pagination";
-import ProductListStore from "@store/ProductListStore";
-import rootStore from "@store/RootStore/instance";
-import { useLocalStore } from "@utils/useLocalStore";
+import Button from "components/Button";
+import Container from "components/Container";
+import Pagination from "components/Pagination";
+import WithLoader from "components/WithLoader";
 import { observer } from "mobx-react-lite";
 import { useSearchParams } from "react-router-dom";
+import ProductListStore from "store/ProductListStore";
+import rootStore from "store/RootStore/instance";
+import { Meta } from "utils/meta";
+import { useLocalStore } from "utils/useLocalStore";
 
 import Catalog from "./components/Catalog";
 import Filter from "./components/Filter";
@@ -42,13 +44,13 @@ const MainPage: React.FC = () => {
       setSearchParams({
         ...rootStore.query.allParams,
         query: event.target.value,
+        page: "1",
       });
     },
     [setSearchParams]
   );
 
   const value = String(rootStore.query.getParam("query"));
-
   React.useEffect(() => {
     productListStore.getProductList({
       page: currentPage,
@@ -61,17 +63,19 @@ const MainPage: React.FC = () => {
   }, [productListStore]);
 
   const onClick = React.useCallback(() => {
+    setCurrentPage(1);
     productListStore.getProductList({
       page: currentPage,
       value: value,
     });
-  }, [currentPage, productListStore, value]);
+  }, [currentPage, productListStore, setCurrentPage, value]);
 
   const setCategoryId = React.useCallback(
     (id: string) => {
       setSearchParams({
         ...rootStore.query.allParams,
         categoryId: id,
+        page: "1",
       });
     },
     [setSearchParams]
@@ -94,7 +98,11 @@ const MainPage: React.FC = () => {
           value={value}
           handleChange={handleChange}
           children={
-            <Button className={styles.find_button} onClick={onClick}>
+            <Button
+              className={styles.find_button}
+              loading={value !== "" && productListStore.meta === Meta.loading}
+              onClick={onClick}
+            >
               Find Now
             </Button>
           }
@@ -106,17 +114,19 @@ const MainPage: React.FC = () => {
           setCategory={setCategoryId}
         />
       </div>
-      <Catalog
-        quantity={productListStore.quantity}
-        list={productListStore.productList}
-        categoryName={categoryName}
-      />
-      <Pagination
-        totalProducts={productListStore.quantity}
-        currentPage={currentPage}
-        productsPerPage={9}
-        onPageChange={setCurrentPage}
-      />
+      <WithLoader loading={productListStore.meta === Meta.loading}>
+        <Catalog
+          quantity={productListStore.quantity}
+          list={productListStore.productList}
+          categoryName={categoryName}
+        />
+        <Pagination
+          totalProducts={productListStore.quantity}
+          currentPage={currentPage}
+          productsPerPage={9}
+          onPageChange={setCurrentPage}
+        />
+      </WithLoader>
     </Container>
   );
 };

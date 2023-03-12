@@ -1,4 +1,6 @@
-import Button from "@components/Button";
+import * as React from "react";
+
+import Button from "components/Button";
 
 import styles from "./ProductInfo.module.scss";
 
@@ -30,4 +32,4 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   );
 };
 
-export default ProductInfo;
+export default React.memo(ProductInfo);

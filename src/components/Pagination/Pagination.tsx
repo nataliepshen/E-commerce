@@ -1,8 +1,8 @@
-import { useCallback } from "react";
+import React from "react";
 
-import { usePagination, usePaginationProps } from "@components/usePagination";
 import classNames from "classnames";
 import classnames from "classnames/bind";
+import { usePagination, usePaginationProps } from "components/usePagination";
 
 import styles from "./Pagination.module.scss";
 
@@ -23,11 +23,11 @@ const Pagination: React.FC<PaginationProps> = ({
     currentPage,
   });
 
-  const onNext = useCallback(() => {
+  const onNext = React.useCallback(() => {
     onPageChange(currentPage + 1);
   }, [currentPage, onPageChange]);
 
-  const onPrev = useCallback(() => {
+  const onPrev = React.useCallback(() => {
     onPageChange(currentPage - 1);
   }, [currentPage, onPageChange]);
 
@@ -75,4 +75,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;
+export default React.memo(Pagination);

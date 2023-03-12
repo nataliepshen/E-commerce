@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import Container from "@components/Container";
-import OneProductStore from "@store/OneProductStore";
-import { useLocalStore } from "@utils/useLocalStore";
+import Container from "components/Container";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
+import OneProductStore from "store/OneProductStore";
+import { useLocalStore } from "utils/useLocalStore";
 
 import ProductImage from "./components/ProductCard/ProductImage";
 import ProductInfo from "./components/ProductCard/ProductInfo";

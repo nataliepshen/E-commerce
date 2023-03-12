@@ -1,8 +1,8 @@
 /* Функция, которая из массива связанных товаров рандомно
 выбирает три позиции для заполенения Related Items*/
 
-import { normalizeProduct } from "@store/models/normalize";
-import { ProductApi, ProductModel } from "@store/models/products";
+import { normalizeProduct } from "store/models/normalize";
+import { ProductApi, ProductModel } from "store/models/products";
 
 export const getRandomRelatedItems = (
   itemsArray: ProductApi[]

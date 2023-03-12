@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import React from "react";
 
-import { range } from "@utils/range";
+import { range } from "utils/range";
 
 export type usePaginationProps = {
   totalProducts: number;
@@ -13,7 +13,7 @@ export const usePagination = ({
   productsPerPage,
   currentPage,
 }: usePaginationProps) => {
-  const pageArray = useMemo<(string | number)[]>(() => {
+  const pageArray = React.useMemo<(string | number)[]>(() => {
     const totalPages = Math.ceil(totalProducts / productsPerPage);
     const totalPageNumbers = 7;
     if (totalPageNumbers >= totalPages) {
