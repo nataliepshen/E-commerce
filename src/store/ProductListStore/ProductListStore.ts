@@ -10,12 +10,13 @@ import { CategoryModel } from "store/models/categories";
 import { normalizeCategory, normalizeProduct } from "store/models/normalize";
 import { ProductModel } from "store/models/products";
 import rootStore from "store/RootStore/instance";
+import { Meta } from "utils/meta";
 import { ILocalStore } from "utils/useLocalStore";
 
 import { GetProductListParams, IProductListStore } from "./types";
 import ApiRequest from "../ApiRequest";
 
-type PrivatFields = "_productList" | "_quantity" | "_categoryList";
+type PrivatFields = "_productList" | "_quantity" | "_meta" | "_categoryList";
 
 const ITEMS_LIMIT: number = 9;
 export default class ProductListStore
@@ -24,6 +25,7 @@ export default class ProductListStore
   private readonly _apiRequest = new ApiRequest();
   private _productList: ProductModel[] = [];
   private _quantity: number = 0;
+  private _meta: Meta = Meta.initial;
   private _categoryList: CategoryModel[] = [];
   showFilter: boolean = false;
 
@@ -31,10 +33,13 @@ export default class ProductListStore
     makeObservable<ProductListStore, PrivatFields>(this, {
       _productList: observable.ref,
       _quantity: observable,
+      _meta: observable,
       _categoryList: observable.ref,
       showFilter: observable,
       productList: computed,
       quantity: computed,
+      meta: computed,
+      categoryList: computed,
       setProductList: action.bound,
       setQuantity: action.bound,
       toggleFilter: action.bound,
@@ -50,6 +55,10 @@ export default class ProductListStore
 
   get quantity(): number {
     return this._quantity;
+  }
+
+  get meta(): Meta {
+    return this._meta;
   }
 
   get categoryList(): CategoryModel[] {
@@ -74,6 +83,7 @@ export default class ProductListStore
 
   async getProductList(params: GetProductListParams): Promise<void> {
     const offset = (params.page! - 1) * ITEMS_LIMIT;
+    this._meta = Meta.loading;
     this._productList = [];
     let urlProducts = "";
     let urlQuantity = "";
@@ -89,6 +99,7 @@ export default class ProductListStore
     }
     const response = await this._apiRequest.sendRequest(urlProducts);
     const quantity = await this._apiRequest.sendRequest(urlQuantity);
+    this._meta = Meta.success;
     const products: ProductModel[] = response.data.map(normalizeProduct);
     /* Вот тут был runInAction, который терял контекст видимо */
     this.setProductList(products);
