@@ -1,0 +1,8 @@
+@import "styles/variables.scss";
+
+.heading {
+    @include font-700;
+    font-size: 24px;
+    color: $dark;
+    margin: 0 0 30px 0;
+}

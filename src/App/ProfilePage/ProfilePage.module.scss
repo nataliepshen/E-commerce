@@ -1,0 +1,23 @@
+@import "styles/variables.scss";
+
+.accHeading {
+    @include font-700;
+    font-size: 18px;
+    color: $dark;
+    margin: 0;
+}
+.accPar {
+    @include font-500;
+    font-size: 16px;
+    color: $dark;
+    margin: 15px;
+}
+
+.profilePageContainer {
+    display: flex;
+    flex-direction: column;
+
+    .profileContainer {
+        display: flex;
+    }
+}

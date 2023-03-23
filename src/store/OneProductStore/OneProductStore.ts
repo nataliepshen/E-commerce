@@ -1,15 +1,9 @@
-import ApiRequest from "@store/ApiRequest";
-import { normalizeProduct } from "@store/models/normalize";
-import { ProductModel } from "@store/models/products";
-import { getRandomRelatedItems } from "@utils/getRandomRelatedItems";
-import { ILocalStore } from "@utils/useLocalStore";
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-  runInAction,
-} from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
+import ApiRequest from "store/ApiRequest";
+import { normalizeProduct } from "store/models/normalize";
+import { ProductModel } from "store/models/products";
+import { getRandomItems } from "utils/getRandomItems";
+import { ILocalStore } from "utils/useLocalStore";
 
 import { IOneProductStore } from "./types";
 
@@ -34,6 +28,8 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
       nextDisabled: observable,
       product: computed,
       relatedItems: computed,
+      setProduct: action.bound,
+      setRelatedItems: action.bound,
       getOneProduct: action.bound,
       setNextTrue: action.bound,
       setNextFalse: action.bound,
@@ -52,15 +48,24 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
     return this._relatedItems;
   }
 
+  setProduct(prod: ProductModel) {
+    this._product = prod;
+  }
+
+  setRelatedItems(items: ProductModel[]) {
+    this._relatedItems = items;
+  }
+
   async getOneProduct(id: string): Promise<void> {
     const response = await this._apiRequest.sendRequest(`/products/${id}`);
     const relatedResponse = await this._apiRequest.sendRequest(
       `/categories/${response.data.category.id}/products`
     );
-    runInAction(() => {
-      this._product = normalizeProduct(response.data);
-      this._relatedItems = getRandomRelatedItems(relatedResponse.data);
-    });
+    const product = normalizeProduct(response.data);
+    const relItems = getRandomItems(relatedResponse.data, 3);
+    /* Вот тут был runInAction, который терял контекст видимо */
+    this.setProduct(product);
+    this.setRelatedItems(relItems);
   }
 
   setNextTrue() {

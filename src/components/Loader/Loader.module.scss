@@ -1,0 +1,32 @@
+@import "styles/variables.scss";
+
+.mLoader {
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border: 4.5px solid;
+    border-color: $mint transparent $mint $mint;
+    border-radius: 50px;
+    transform: rotate(35.41deg);
+}
+.sLoader {
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border: 3px solid;
+    border-color: $mint transparent $mint $mint;
+    border-radius: 50px;
+    transform: rotate(35.41deg);
+}
+.lLoader {
+    box-sizing: border-box;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    border: 6px solid;
+    border-color: $mint transparent $mint $mint;
+    border-radius: 50px;
+    transform: rotate(35.41deg);
+}

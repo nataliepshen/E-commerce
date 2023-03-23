@@ -1,0 +1,97 @@
+@import "styles/variables.scss";
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    // height: 550px;
+    box-sizing: border-box;
+    padding: 30px;
+    box-shadow: 0px 4px 20px rgba(175, 173, 181, 0.3);
+
+    // &_short {
+    //     height: 465px;
+    // }
+
+    // &_failed {
+    //     height: 510px;
+    // }
+
+    .linksContainer {
+        @include flex-between;
+        width: 100%;
+        border-bottom: 1px solid #f3f3f3;
+
+        .linkDiv {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+
+            &_active {
+                border-bottom: 1px solid $mint;
+            }
+
+            .link {
+                margin: 0;
+                @include font-500;
+                font-size: 16px;
+                line-height: 130%;
+                color: $dark;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .loginHeading {
+        @include font-700;
+        font-size: 22px;
+        margin: 30px 0 15px 0;
+    }
+
+    .warning {
+        @include font-500;
+        font-size: 14px;
+        color: red;
+        margin: 0 5px;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        .formLabel {
+            @include font-500;
+            font-size: 16px;
+            color: $dark;
+            margin: 15px 0 3px 0;
+        }
+
+        .formInput {
+            @include font-500;
+            font-size: 13px;
+            padding: 5px;
+            border: 1px solid $mint;
+            outline: none;
+        }
+
+        .loginButton {
+            width: 100%;
+            margin-top: 30px;
+        }
+    }
+
+    .loginPar {
+        @include font-500;
+        font-size: 15px;
+        color: #95929d;
+        margin-bottom: 30px;
+
+        .signSpan {
+            color: $dark;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { CategoryModel } from "@store/models/categories";
-import rootStore from "@store/RootStore/instance";
 import classnames from "classnames/bind";
+import { CategoryModel } from "store/models/categories";
+import rootStore from "store/RootStore/instance";
 
 import styles from "./Filter.module.scss";
 
@@ -53,4 +53,4 @@ const Filter: React.FC<FilterProps> = ({
   );
 };
 
-export default React.memo(Filter);
+export default Filter;

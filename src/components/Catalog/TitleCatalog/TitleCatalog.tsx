@@ -16,7 +16,7 @@ const TitleCatalog: React.FC<TitleCatalogProps> = ({
       {categoryName ? (
         <h3 className={styles.titleCat}>{categoryName}</h3>
       ) : (
-        <h3 className={styles.titleCat}>Total Product</h3>
+        <h3 className={styles.titleCat}>Total Products</h3>
       )}
       <div className={styles.quantity}>{quantity}</div>
     </div>

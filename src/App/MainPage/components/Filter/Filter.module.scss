@@ -1,4 +1,4 @@
-@import "@styles/variables.scss";
+@import "styles/variables.scss";
 
 .filter {
     position: relative;
@@ -14,7 +14,7 @@
 .filter_icon {
     width: 30px;
     height: 30px;
-    background: url(~@assets/filter.svg);
+    background: url(~assets/filter.svg);
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 12px;
@@ -40,6 +40,7 @@
     cursor: pointer;
 
     &_selected {
-        color: $mint;
+        // color: $mint;
+        border: 1px solid $mint;
     }
 }

@@ -18,3 +18,7 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+if (module.hot) {
+  module.hot.accept();
+}

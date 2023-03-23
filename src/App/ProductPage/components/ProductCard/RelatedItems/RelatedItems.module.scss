@@ -1,7 +1,8 @@
-@import "@styles/variables.scss";
+@import "styles/variables.scss";
 
 .items_container {
     width: 100%;
+    margin-bottom: 110px;
 }
 .items_title {
     @include font-700;

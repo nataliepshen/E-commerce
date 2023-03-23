@@ -1,0 +1,90 @@
+@import "styles/variables.scss";
+
+.ordersContainer {
+    width: 1000px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    padding: 15px;
+    box-shadow: 0px 4px 20px rgba(175, 173, 181, 0.3);
+
+    .headingContainer {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0 10px;
+        border-bottom: 1px solid #ececec;
+
+        .ordersHeading {
+            @include font-700;
+            font-size: 24px;
+            color: #95929d;
+            margin: 5px 0;
+        }
+    }
+
+    .order {
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 25px 10px;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #ececec;
+        }
+
+        .orderInfo {
+            @include flex-between;
+            align-items: flex-end;
+            margin: 10px 0;
+
+            .orderData {
+                @include font-700;
+                font-size: 20px;
+                color: $dark;
+                margin: 0;
+            }
+
+            .orderStatus {
+                @include font-500;
+                font-size: 16px;
+                line-height: 160%;
+                color: $dark;
+                margin: 0;
+            }
+        }
+
+        .orderContent {
+            @include flex-between;
+            align-items: flex-end;
+            margin: 20px 0;
+
+            .orderProducts {
+                width: 70%;
+                display: flex;
+                overflow: auto hidden;
+
+                .imageContainer {
+                    flex-shrink: 0;
+                    width: 70px;
+                    height: 70px;
+                    margin-right: 15px;
+
+                    .image {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            .orderTotal {
+                @include font-700;
+                font-size: 18px;
+                color: $dark;
+                margin: 0;
+            }
+        }
+    }
+}
