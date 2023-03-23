@@ -9,6 +9,8 @@ export type ButtonProps = React.PropsWithChildren<{
   loading?: boolean;
   onClick?: VoidFunction;
   className?: string;
+  disabled?: boolean;
+  id?: string;
 }>;
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,6 +18,8 @@ const Button: React.FC<ButtonProps> = ({
   children,
   className,
   onClick,
+  disabled,
+  id,
 }) => {
   const cx = classnames.bind(styles);
 
@@ -24,7 +28,8 @@ const Button: React.FC<ButtonProps> = ({
       className={cx("button", className, {
         button_withLoader: loading,
       })}
-      disabled={loading}
+      id={id}
+      disabled={disabled}
       onClick={onClick}
     >
       {loading && <Loader className={styles.button_loader} />}

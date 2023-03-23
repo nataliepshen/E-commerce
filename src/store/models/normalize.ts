@@ -1,5 +1,6 @@
 import { CategoryApi, CategoryModel } from "./categories";
 import { ProductApi, ProductModel } from "./products";
+import { UserApi, UserModel } from "./users";
 
 export const normalizeCategory = (from: CategoryApi): CategoryModel => ({
   id: String(from.id),
@@ -18,4 +19,13 @@ export const normalizeProduct = (from: ProductApi): ProductModel => ({
   price: from.price,
   creationAt: new Date(from.creationAt),
   updatedAt: new Date(from.updatedAt),
+});
+
+export const normalizeUser = (from: UserApi): UserModel => ({
+  id: from.id.toString(),
+  email: from.email,
+  password: from.password,
+  name: from.name,
+  role: from.role,
+  avatar: from.avatar,
 });

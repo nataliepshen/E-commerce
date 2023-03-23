@@ -1,4 +1,8 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, RawAxiosRequestHeaders } from "axios";
+import {
+  AuthUserParams,
+  CreateUserParams,
+} from "store/RootStore/UserStore/types";
 
 import { IApiRequest } from "./types";
 
@@ -11,8 +15,16 @@ export default class ApiRequest implements IApiRequest {
       baseURL: BASE_URL,
     });
   }
-  sendRequest = async (url: string) => {
-    const response = await this._instance.get(url);
+  sendRequest = async (url: string, headers?: RawAxiosRequestHeaders) => {
+    const response = await this._instance.get(url, { headers });
+    return response;
+  };
+
+  sendPostRequest = async (
+    url: string,
+    params: CreateUserParams | AuthUserParams
+  ) => {
+    const response = await this._instance.post(url, params);
     return response;
   };
 }

@@ -11,7 +11,11 @@ export type InputProps = Omit<
   children?: React.ReactNode;
 };
 
-const Input: React.FC<InputProps> = ({ value, handleChange, children }) => {
+const Input: React.FC<InputProps> = ({
+  value = "",
+  handleChange,
+  children,
+}) => {
   return (
     <div className={`${styles.input_field} ${styles.search_icon}`}>
       <input

@@ -1,0 +1,99 @@
+@import "styles/variables.scss";
+
+.cartItems_container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 840px;
+    min-height: 230px;
+    margin: 20px 30px 20px 0;
+    padding: 15px;
+    box-shadow: 0px 4px 20px rgba(175, 173, 181, 0.3);
+
+    .cartItem {
+        box-sizing: border-box;
+        display: flex;
+        padding: 25px 10px;
+        width: 100%;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #ececec;
+        }
+
+        .imgContainer {
+            width: 150px;
+            height: 150px;
+            margin-right: 15px;
+
+            .itemImg {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .itemTitle {
+            width: 295px;
+            height: 150px;
+            margin: 0 15px;
+            @include font-500;
+            font-size: 16px;
+            color: $dark;
+        }
+        .itemQuantity_container {
+            display: flex;
+            align-items: flex-start;
+            width: 100px;
+            margin: 0 15px 0 15px;
+            height: 150px;
+
+            .itemQuantity {
+                @include flex-between;
+                align-items: center;
+    
+                .minusPlusBtn {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 7px;
+                    border: none;
+                    background-color: #ececec;
+                    color: $dark;
+                    @include font-700;
+                    font-size: 22px;
+                }
+    
+                .quantity {
+                    width: 40px;
+                    height: 24px;
+                    @include font-500;
+                    color: $dark;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+        .prices {
+            width: 150px;
+            height: 150px;
+            margin-left: 10px;
+
+            .itemPrice {
+                color: $dark;
+                @include font-700;
+                font-size: 20px;
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-start;
+    
+                &_ifDiscount {
+                    color: #888591;
+                    text-decoration: line-through;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 160%;
+                }
+            }
+        }
+    }
+}

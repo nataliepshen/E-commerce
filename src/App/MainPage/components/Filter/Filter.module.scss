@@ -40,6 +40,7 @@
     cursor: pointer;
 
     &_selected {
-        color: $mint;
+        // color: $mint;
+        border: 1px solid $mint;
     }
 }

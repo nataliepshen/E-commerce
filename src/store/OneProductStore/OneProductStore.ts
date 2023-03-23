@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import ApiRequest from "store/ApiRequest";
 import { normalizeProduct } from "store/models/normalize";
 import { ProductModel } from "store/models/products";
-import { getRandomRelatedItems } from "utils/getRandomRelatedItems";
+import { getRandomItems } from "utils/getRandomItems";
 import { ILocalStore } from "utils/useLocalStore";
 
 import { IOneProductStore } from "./types";
@@ -62,7 +62,7 @@ export default class OneProductStore implements IOneProductStore, ILocalStore {
       `/categories/${response.data.category.id}/products`
     );
     const product = normalizeProduct(response.data);
-    const relItems = getRandomRelatedItems(relatedResponse.data);
+    const relItems = getRandomItems(relatedResponse.data, 3);
     /* Вот тут был runInAction, который терял контекст видимо */
     this.setProduct(product);
     this.setRelatedItems(relItems);

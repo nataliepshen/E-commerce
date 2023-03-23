@@ -4,6 +4,7 @@ import Container from "components/Container";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import OneProductStore from "store/OneProductStore";
+import rootStore from "store/RootStore/instance";
 import { useLocalStore } from "utils/useLocalStore";
 
 import ProductImage from "./components/ProductCard/ProductImage";
@@ -14,7 +15,7 @@ import styles from "./ProductPage.module.scss";
 const ProductPage: React.FC = () => {
   const { id } = useParams();
   const oneProductStore = useLocalStore(() => new OneProductStore(String(id)));
-
+  const discount = rootStore.user.getDiscount();
   React.useEffect(() => {
     oneProductStore.getOneProduct(String(id));
   }, [id, oneProductStore]);
@@ -39,6 +40,11 @@ const ProductPage: React.FC = () => {
                 name={oneProductStore.product.title}
                 description={oneProductStore.product.description}
                 price={oneProductStore.product.price}
+                product={oneProductStore.product}
+                withDiscount={
+                  discount !== null && rootStore.user.token ? true : false
+                }
+                discount={discount}
               />
             </div>
             <RelatedItems items={oneProductStore.relatedItems} />

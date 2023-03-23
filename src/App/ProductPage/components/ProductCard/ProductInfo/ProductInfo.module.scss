@@ -17,11 +17,24 @@
     color: $grey;
     margin: 20px 0 0 0;
 }
+.prices {
+    display: flex;
+    margin: 0 0 50px 0;
+}
 .prod_price {
     @include font-700;
     font-size: 44px;
     color: $dark;
-    margin: 0 0 50px 0;
+    margin: 0;
+
+    &_ifDiscount {
+        margin-left: 30px;
+        color: #888591;
+        text-decoration: line-through;
+        font-weight: 500;
+        font-size: 36px;
+        line-height: 160%;
+    }
 }
 .btn_container {
     width: 100%;
@@ -38,4 +51,9 @@
     background: $white;
     color: $dark;
     border: 2px solid #f3f3f3;
+
+    &:active {
+        border-color: $mint;
+        background-color: $white;
+    }
 }

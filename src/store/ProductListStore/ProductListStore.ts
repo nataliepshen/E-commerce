@@ -70,6 +70,7 @@ export default class ProductListStore
   };
 
   setProductList(prodList: ProductModel[]) {
+    this._meta = Meta.success;
     this._productList = prodList;
   }
 
@@ -82,7 +83,10 @@ export default class ProductListStore
   }
 
   async getProductList(params: GetProductListParams): Promise<void> {
-    const offset = (params.page! - 1) * ITEMS_LIMIT;
+    let offset = (params.page! - 1) * ITEMS_LIMIT;
+    if (isNaN(offset)) {
+      offset = 0;
+    }
     this._meta = Meta.loading;
     this._productList = [];
     let urlProducts = "";
@@ -99,9 +103,7 @@ export default class ProductListStore
     }
     const response = await this._apiRequest.sendRequest(urlProducts);
     const quantity = await this._apiRequest.sendRequest(urlQuantity);
-    this._meta = Meta.success;
     const products: ProductModel[] = response.data.map(normalizeProduct);
-    /* Вот тут был runInAction, который терял контекст видимо */
     this.setProductList(products);
     this.setQuantity(quantity.data.length);
   }
@@ -120,7 +122,6 @@ export default class ProductListStore
   async getCategoryList() {
     const response = await this._apiRequest.sendRequest(`/categories`);
     const categories = response.data.map(normalizeCategory);
-    /* Вот тут был runInAction, который терял контекст видимо */
     this.setCategoryList(categories);
   }
 
