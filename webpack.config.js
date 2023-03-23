@@ -43,7 +43,7 @@ module.exports = {
   output: {
     path: buildPath,
     filename: "bundle.js",
-    publicPath: "/",
+    publicPath: "auto",
   },
   plugins: [
     new HtmlWebpackPlugin({

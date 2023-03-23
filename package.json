@@ -2,6 +2,7 @@
   "name": "e-commerce",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://nataliepshen.github.io/E-commerce",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -26,13 +27,15 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --fix",
     "dev": "cross-env NODE_ENV=development npx webpack serve --mode=development",
-    "prod": "cross-env NODE_ENV=production npx webpack --mode=production"
+    "prod": "cross-env NODE_ENV=production npx webpack --mode=production",
+    "build": "cross-env NODE_ENV=production npx webpack --mode=production",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
@@ -71,6 +74,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.3",
     "postcss-loader": "^7.0.2",
