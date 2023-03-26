@@ -17,8 +17,6 @@
         width: 100%;
         max-width: 500px;
         height: auto;
-        // margin: auto;
-        // margin-left: 500px;
     }
     .example_thumb {
         cursor: pointer;
@@ -37,7 +35,7 @@
         position: relative;
         background: #ddd;
     }
-    .example_track.example_track-1 {
+    .example_track:nth-child(2n){
         background: $mint;
     }
     .horizontal_slider .example_track {
