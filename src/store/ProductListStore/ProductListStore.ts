@@ -89,17 +89,22 @@ export default class ProductListStore
     }
     this._meta = Meta.loading;
     this._productList = [];
-    let urlProducts = "";
-    let urlQuantity = "";
+    let urlProducts = `/products?offset=${offset}&limit=${ITEMS_LIMIT}`;
+    let urlQuantity = `/products?`;
     if (params.value) {
-      urlProducts = `/products?title=${params.value}&offset=${offset}&limit=${ITEMS_LIMIT}`;
-      urlQuantity = `/products/?title=${params.value}`;
-    } else if (params.categoryId) {
-      urlProducts = `/products/?categoryId=${params.categoryId}&offset=${offset}&limit=${ITEMS_LIMIT}`;
-      urlQuantity = `/products/?categoryId=${params.categoryId}`;
-    } else {
-      urlProducts = `/products?offset=${offset}&limit=${ITEMS_LIMIT}`;
-      urlQuantity = `/products`;
+      urlProducts += `&title=${params.value}`;
+      urlQuantity += `&title=${params.value}`;
+    }
+    if (params.categoryId) {
+      urlProducts += `&categoryId=${params.categoryId}`;
+      urlQuantity += `&categoryId=${params.categoryId}`;
+    }
+    if (params.priceRange) {
+      if (params.priceRange[0] === 0) {
+        params.priceRange[0] = 1;
+      }
+      urlProducts += `&price_min=${params.priceRange[0]}&price_max=${params.priceRange[1]}`;
+      urlQuantity += `&price_min=${params.priceRange[0]}&price_max=${params.priceRange[1]}`;
     }
     const response = await this._apiRequest.sendRequest(urlProducts);
     const quantity = await this._apiRequest.sendRequest(urlQuantity);
@@ -113,8 +118,12 @@ export default class ProductListStore
     (page: number) => {
       const value = String(rootStore.query.getParam("query"));
       const categoryId = Number(rootStore.query.getParam("categoryId"));
+      const priceRange = [
+        Number(rootStore.query.getParam("price_min")),
+        Number(rootStore.query.getParam("price_max")),
+      ];
       if (page) {
-        this.getProductList({ page, value, categoryId });
+        this.getProductList({ page, value, categoryId, priceRange });
       }
     }
   );

@@ -16,6 +16,7 @@ import { useLocalStore } from "utils/useLocalStore";
 import Filter from "./components/Filter";
 import Heading from "./components/Heading";
 import Input from "./components/Input";
+import RangeSlider from "./components/RangeSlider";
 import styles from "./MainPage.module.scss";
 
 const MainPage: React.FC = () => {
@@ -24,6 +25,8 @@ const MainPage: React.FC = () => {
     page: "1",
     query: "",
     categoryId: "",
+    price_min: "",
+    price_max: "",
   });
 
   rootStore.query.setSearch(searchParams.toString());
@@ -69,10 +72,43 @@ const MainPage: React.FC = () => {
   const categoryName =
     productListStore.categoryList[Number(categoryId) - 1]?.name;
 
-  const handleDebounce = (value: string, page: number) => {
+  const discount = rootStore.user.getDiscount();
+  const withDiscount = discount !== null && rootStore.user.token ? true : false;
+
+  const setPriceRange = React.useCallback(
+    (priceRange: number[]) => {
+      setSearchParams({
+        ...rootStore.query.allParams,
+        price_min: String(priceRange[0]),
+        price_max: String(priceRange[1]),
+        page: "1",
+      });
+    },
+    [setSearchParams]
+  );
+
+  const min = rootStore.query.getParam("price_min")
+    ? Number(rootStore.query.getParam("price_min"))
+    : 0;
+  const minWithDiscount = (min * 100) / (100 - Number(discount));
+  const max = rootStore.query.getParam("price_max")
+    ? Number(rootStore.query.getParam("price_max"))
+    : 1000;
+  const maxWithDiscount = (max * 100) / (100 - Number(discount));
+
+  const handleDebounce = (
+    value: string,
+    page: number,
+    categoryId?: string,
+    priceRange?: number[]
+  ) => {
     productListStore.getProductList({
       page: currentPage,
       value: value,
+      categoryId: Number(categoryId),
+      priceRange: withDiscount
+        ? [minWithDiscount, maxWithDiscount]
+        : [min, max],
     });
   };
 
@@ -80,30 +116,67 @@ const MainPage: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event);
-    debounceQuery(value, currentPage);
+    debounceQuery(value, currentPage, categoryId, [min, max]);
   };
-
-  React.useEffect(() => {
-    productListStore.getCategoryList();
-  }, [productListStore]);
 
   const onClick = React.useCallback(() => {
     setCurrentPage(1);
     productListStore.getProductList({
       page: currentPage,
       value: value,
+      categoryId: Number(categoryId),
+      priceRange: withDiscount
+        ? [minWithDiscount, maxWithDiscount]
+        : [min, max],
     });
-  }, [currentPage, productListStore, setCurrentPage, value]);
+  }, [
+    categoryId,
+    currentPage,
+    max,
+    maxWithDiscount,
+    min,
+    minWithDiscount,
+    productListStore,
+    setCurrentPage,
+    value,
+    withDiscount,
+  ]);
+
+  const onAfterChange = React.useCallback(() => {
+    productListStore.getProductList({
+      page: currentPage,
+      priceRange: withDiscount
+        ? [minWithDiscount, maxWithDiscount]
+        : [min, max],
+      value: value,
+      categoryId: Number(categoryId),
+    });
+  }, [
+    categoryId,
+    currentPage,
+    max,
+    maxWithDiscount,
+    min,
+    minWithDiscount,
+    productListStore,
+    value,
+    withDiscount,
+  ]);
+
+  React.useEffect(() => {
+    productListStore.getCategoryList();
+  }, [productListStore]);
 
   React.useEffect(() => {
     productListStore.getProductList({
       page: currentPage,
       categoryId: Number(categoryId),
       value: value,
+      priceRange: withDiscount
+        ? [minWithDiscount, maxWithDiscount]
+        : [min, max],
     });
   }, [categoryId, currentPage, productListStore]);
-
-  const discount = rootStore.user.getDiscount();
 
   return (
     <Container>
@@ -129,13 +202,17 @@ const MainPage: React.FC = () => {
           setCategory={setCategoryId}
         />
       </div>
+      <RangeSlider
+        handleChange={(value) => setPriceRange(value)}
+        onAfterChange={onAfterChange}
+        left={min}
+        right={max}
+      />
       <WithLoader loading={productListStore.meta === Meta.loading}>
         <Catalog
           quantity={productListStore.quantity}
           list={productListStore.productList}
-          withDiscount={
-            discount !== null && rootStore.user.token ? true : false
-          }
+          withDiscount={withDiscount}
           discount={discount}
           categoryName={categoryName}
         />
