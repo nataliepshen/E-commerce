@@ -25,7 +25,7 @@
     list-style: none;
     box-shadow: $shadow;
     padding: 0;
-    z-index: 1;
+    z-index: 5;
 }
 .filter_item {
     box-sizing: border-box;
@@ -40,7 +40,6 @@
     cursor: pointer;
 
     &_selected {
-        // color: $mint;
         border: 1px solid $mint;
     }
 }

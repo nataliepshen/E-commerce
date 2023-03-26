@@ -1,0 +1,76 @@
+@import "styles/variables.scss";
+
+
+.slider_container {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin-left: auto;
+
+    .slider_heading {
+        @include font-500;
+        color: $dark;
+        margin: 0;
+    }
+
+    .horizontal_slider {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        // margin: auto;
+        // margin-left: 500px;
+    }
+    .example_thumb {
+        cursor: pointer;
+        position: absolute;
+        z-index: 100;
+        background: $mint;
+        border: 5px solid $mint;
+        border-radius: 100%;
+        display: block;
+        box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
+    }
+    .example_thumb.active {
+        background-color: grey;
+    }
+    .example_track {
+        position: relative;
+        background: #ddd;
+    }
+    .example_track.example_track-1 {
+        background: $mint;
+    }
+    .horizontal_slider .example_track {
+        top: 20px;
+        height: 4px;
+    }
+    .horizontal_slider .example_thumb {
+        top: 12px;
+        width: 10px;
+        outline: none;
+        height: 10px;
+        line-height: 38px;
+    }
+    .thumbs_container {
+        @include flex-between;
+        width: 270px;
+        margin-top: 40px;
+        margin-left: 115px;
+    
+        .thumb {
+            box-sizing: border-box;
+            width: 120px;
+            border: 1px solid #e6e6e6;
+            padding: 5px 12px;
+            @include font-500;
+            font-size: 16px;
+            color: $grey;
+    
+            .price {
+                font-size: 18px;
+                color: $dark;
+            }
+        }
+    }
+}
+

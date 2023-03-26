@@ -32,7 +32,7 @@ const DiscountBoard: React.FC = () => {
       } else {
         rootStore.user.setDiscount(discountList[index - 1]);
       }
-      setIsDiscount(true);
+      setTimeout(() => setIsDiscount(true), 500);
     });
   };
 
