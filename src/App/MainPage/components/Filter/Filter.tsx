@@ -24,7 +24,7 @@ const Filter: React.FC<FilterProps> = ({
     <div>
       <button className={styles.filter} onClick={handleClickFilter}>
         <div className={styles.filter_icon}></div>
-        Filter
+        Filter by category
       </button>
       {showItems && (
         <ul className={styles.filter_list}>

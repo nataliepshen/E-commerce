@@ -2,12 +2,16 @@
 
 .filter {
     position: relative;
-    padding: 26px 52px;
+    width: 186px;
+    height: 84px;
+    padding: 10px 25px;
     background: $white;
     box-shadow: $shadow;
     @include font-500;
+    line-height: 150%;
     color: $dark;
     display: flex;
+    align-items: center;
     border: none;
     cursor: pointer;
 }
@@ -17,7 +21,7 @@
     background: url(~assets/filter.svg);
     background-repeat: no-repeat;
     background-position: center;
-    margin-right: 12px;
+    margin-right: 5px;
 }
 .filter_list {
     width: 189.25px;
