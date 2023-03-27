@@ -1,11 +1,8 @@
 @import "styles/variables.scss";
 
-.catalog_container {
+.catalog {
     width: 100%;
     margin-bottom: 50px;
-}
-
-.catalog {
     @include flex-between;
     flex-wrap: wrap;
 }

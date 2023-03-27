@@ -3,7 +3,7 @@
 
 .slider_container {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     height: auto;
     margin-left: auto;
 
@@ -15,10 +15,8 @@
 
     .horizontal_slider {
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         height: auto;
-        // margin: auto;
-        // margin-left: 500px;
     }
     .example_thumb {
         cursor: pointer;
@@ -37,7 +35,7 @@
         position: relative;
         background: #ddd;
     }
-    .example_track.example_track-1 {
+    .example_track:nth-child(2n){
         background: $mint;
     }
     .horizontal_slider .example_track {
@@ -55,7 +53,7 @@
         @include flex-between;
         width: 270px;
         margin-top: 40px;
-        margin-left: 115px;
+        margin-left: 165px;
     
         .thumb {
             box-sizing: border-box;

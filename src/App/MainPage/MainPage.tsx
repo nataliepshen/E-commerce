@@ -17,6 +17,7 @@ import Filter from "./components/Filter";
 import Heading from "./components/Heading";
 import Input from "./components/Input";
 import RangeSlider from "./components/RangeSlider";
+import TitleCatalog from "./components/TitleCatalog";
 import styles from "./MainPage.module.scss";
 
 const MainPage: React.FC = () => {
@@ -202,15 +203,20 @@ const MainPage: React.FC = () => {
           setCategory={setCategoryId}
         />
       </div>
-      <RangeSlider
-        handleChange={(value) => setPriceRange(value)}
-        onAfterChange={onAfterChange}
-        left={min}
-        right={max}
-      />
+      <div className={styles.title_slider}>
+        <TitleCatalog
+          quantity={productListStore.quantity}
+          categoryName={categoryName}
+        />
+        <RangeSlider
+          handleChange={(value) => setPriceRange(value)}
+          onAfterChange={onAfterChange}
+          left={min}
+          right={max}
+        />
+      </div>
       <WithLoader loading={productListStore.meta === Meta.loading}>
         <Catalog
-          quantity={productListStore.quantity}
           list={productListStore.productList}
           withDiscount={withDiscount}
           discount={discount}

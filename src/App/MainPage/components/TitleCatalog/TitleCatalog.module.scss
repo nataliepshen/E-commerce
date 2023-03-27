@@ -1,11 +1,15 @@
 @import "styles/variables.scss";
 
+.high_container {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+}
 .title_container {
     width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 50px;
 }
 .titleCat {
     @include font-700;
