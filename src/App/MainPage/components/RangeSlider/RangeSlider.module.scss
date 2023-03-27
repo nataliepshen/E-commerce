@@ -3,7 +3,7 @@
 
 .slider_container {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     height: auto;
     margin-left: auto;
 
@@ -15,7 +15,7 @@
 
     .horizontal_slider {
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         height: auto;
     }
     .example_thumb {
@@ -53,7 +53,7 @@
         @include flex-between;
         width: 270px;
         margin-top: 40px;
-        margin-left: 115px;
+        margin-left: 165px;
     
         .thumb {
             box-sizing: border-box;

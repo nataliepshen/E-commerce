@@ -3,7 +3,13 @@
 .search_filter {
   width: 100%;
   @include flex-between;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+.title_slider {
+  @include flex-between;
+  width: 100%;
+  margin-bottom: 40px;
 }
 .find_button {
   position: absolute;
